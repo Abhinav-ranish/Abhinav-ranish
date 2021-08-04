@@ -5,7 +5,7 @@
 ###  - 📫 How to reach me 
 ###    Email      - abhinav.ranish@outlook.com
 ###   Instagram  - abhinav.ranish
-###   Websites I Own
+###   Webpages
 https://ranishabhinav.blogspot.com
 
 http://blog.abhinavranish.gq (Currently Unavailable)
