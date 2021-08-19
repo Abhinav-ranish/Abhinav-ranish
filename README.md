@@ -9,13 +9,15 @@
 ###    Email      - abhinav.ranish@outlook.com
 ###   Instagram  - abhinav.ranish
 ###   Webpages
+https://abhinavranish.gq
+
 https://ranishabhinav.blogspot.com
 
-http://blog.abhinavranish.gq (Currently Unavailable)
+http://code.abhinavranish.gq 
 
-http://code.abhinavranish.gq (Currently Unavailable)
+http://blog.abhinavranish.gq //Disabled 
 
-http://test.abhinavranish.gq (Currently Unavailable)
+http://test.abhinavranish.gq //Currently Disabled
 <!---
 Abhinav-ranish/Abhinav-ranish is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 You can click the Preview link to take a look at your changes.
