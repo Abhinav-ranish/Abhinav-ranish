@@ -2,7 +2,7 @@
 [![My GitHub Language Stats](https://github-readme-stats.vercel.app/api/top-langs/?username=abhinav-ranish&langs_count=5&theme=tokyonight)]()
 
 ###  - 👋 Hi, I’m @Abhinav-ranish
-###  - 👀 I’m interested in C++, Python, Php, Html.
+###  - 👀 I’m interested in C++, Python, Java.
 ###  - 📫 How to reach me 
 Email      - abhinav.ranish@outlook.com
 Instagram  - abhinav.ranish
