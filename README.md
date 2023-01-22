@@ -1,6 +1,6 @@
-![My GitHub stats](https://github-readme-stats.vercel.app/api?username=Abhinav-ranish&count_private=true)
+![My GitHub stats](https://github-readme-stats.vercel.app/api?username=Abhinav-ranish&count_private=true&theme=dark))
 
-[![My GitHub Language Stats](https://github-readme-stats.vercel.app/api/top-langs/?username=abhinav-ranish&langs_count=10&theme=tokyonight)]()
+[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=abhinav_ranish&layout=compact&theme=dark))](https://github.com/abhinav_ranish/github-readme-stats)
 
 ###  - 👋 Hi, I’m @Abhinav-ranish
 ###  - 👀 I’m interested in C++, Python, Java.
