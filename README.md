@@ -1,3 +1,5 @@
+![My GitHub stats](https://github-readme-stats.vercel.app/api?username=Abhinav-ranish&count_private=true)
+
 [![My GitHub Language Stats](https://github-readme-stats.vercel.app/api/top-langs/?username=abhinav-ranish&langs_count=10&theme=tokyonight)]()
 
 ###  - 👋 Hi, I’m @Abhinav-ranish
