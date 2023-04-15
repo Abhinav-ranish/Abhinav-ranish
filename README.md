@@ -27,7 +27,7 @@
 [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=Abhinav-ranish&layout=compact&theme=radical)](https://github.com/Abhinav-ranish/github-readme-stats)
 
 <h1></h1>
-<h1 align="center">- 📫 How to reach me </h1>
+<h1 align="center">📫 How to reach me </h1>
 <p align="center">
   <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/Color/Instagram.svg?raw=true" alt="Instagram" width="25" height="25">
   <br>abhinav.ranish
