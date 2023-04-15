@@ -8,8 +8,7 @@
 
 ###  - 👀 I’m interested in C++, Python, Java.
 ###  - 📫 How to reach me 
-### ![Instagram](<img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/Color/Instagram.svg?raw=true" alt="Instagram" width="50" height="50">
-)  - abhinav.ranish
+### <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/Color/Instagram.svg?raw=true" alt="Instagram" width="20" height="20"> - abhinav.ranish
 
 https://ranishabhinav.blogspot.com
 
