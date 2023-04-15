@@ -1,3 +1,9 @@
+<div style="position:relative;text-align:right;">
+  <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/Color/Instagram.svg?raw=true" alt="Instagram" width="25" height="25" style="position:absolute;top:0;right:0;">
+  <span style="display:block;">abhinav.ranish</span>
+</div>
+
+
 <h1 align="center">Hi 👋, I'm Abhinav Ranish</h1>
 <h3 align="center">CS @ Cybersecurity Student at ASU</h3>
 
@@ -8,10 +14,7 @@
 
 ###  - 👀 I’m interested in C++, Python, Java.
 ###  - 📫 How to reach me 
-<p align="center">
-  <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/Color/Instagram.svg?raw=true" alt="Instagram" width="25" height="25">
-  <br>abhinav.ranish
-</p>
+
 
 https://ranishabhinav.blogspot.com
 
@@ -21,6 +24,11 @@ https://ranishabhinav.blogspot.com
 
 [![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=Abhinav-ranish&layout=compact&theme=radical)](https://github.com/Abhinav-ranish/github-readme-stats)
 
+###  - 📫 How to reach me 
+<p align="center">
+  <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/Color/Instagram.svg?raw=true" alt="Instagram" width="25" height="25">
+  <br>abhinav.ranish
+</p>
 
 <!---
 Abhinav-ranish/Abhinav-ranish is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
