@@ -1,4 +1,4 @@
-<h1 align="center">Hi 👋, I'm Gs Deluxe</h1>
+<h1 align="center">Hi 👋, I'm Abhinav Ranish</h1>
 <h3 align="center">CS @ Cybersequrity Student at ASU</h3>
 
 <p align="center">
