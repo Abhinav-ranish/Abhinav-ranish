@@ -8,8 +8,7 @@
 
 ###  - 👀 I’m interested in C++, Python, Java.
 ###  - 📫 How to reach me 
-Email      - abhinav.ranish@outlook.com
-Instagram  - abhinav.ranish
+### ![Instagram](https://github.com/gauravghongde/social-icons/blob/master/SVG/Color/Instagram.svg)  - abhinav.ranish
 
 https://ranishabhinav.blogspot.com
 
