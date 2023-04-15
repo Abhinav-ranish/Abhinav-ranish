@@ -1,8 +1,7 @@
-<div style="position:relative;text-align:right;">
-  <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/Color/Instagram.svg?raw=true" alt="Instagram" width="25" height="25" style="position:absolute;top:0;right:0;">
+<div style="position:relative;text-align:left;">
+  <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/Color/Instagram.svg?raw=true" alt="Instagram" width="25" height="25" style="position:absolute;top:0;left:0;">
   <span style="display:block;">abhinav.ranish</span>
 </div>
-
 
 <h1 align="center">Hi 👋, I'm Abhinav Ranish</h1>
 <h3 align="center">CS @ Cybersecurity Student at ASU</h3>
