@@ -1,7 +1,3 @@
-<div style="position:relative;text-align:left;">
-  <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/Color/Instagram.svg?raw=true" alt="Instagram" width="25" height="25" style="position:absolute;top:0;left:0;">
-  <strong>abhinav.ranish</strong>
-</div>
 
 <h1 align="center">Hi 👋, I'm Abhinav Ranish</h1>
 <h3 align="center">CS @ Cybersecurity Student at ASU</h3>
@@ -13,9 +9,11 @@
 
 ###  - 👀 I’m interested in C++, Python, Java.
 ###  - 📫 How to reach me 
+<div style="position:relative;text-align:left;">
+  <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/Color/Instagram.svg?raw=true" alt="Instagram" width="25" height="25" style="position:absolute;top:0;left:0;">
+  <strong>abhinav.ranish</strong>
+</div>
 
-
-https://ranishabhinav.blogspot.com
 
 ![My GitHub stats](https://github-readme-stats.vercel.app/api?username=Abhinav-ranish&count_private=true&bg_color=30,e96443,904e95&title_color=fff&text_color=fff)
 
@@ -29,6 +27,9 @@ https://ranishabhinav.blogspot.com
   <br>abhinav.ranish
 </p>
 
+https://ranishabhinav.blogspot.com
+
+https://abhinavranish.glitch.me
 <!---
 Abhinav-ranish/Abhinav-ranish is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
 You can click the Preview link to take a look at your changes.
