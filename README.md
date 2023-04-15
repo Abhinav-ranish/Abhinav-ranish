@@ -11,7 +11,6 @@
 <h1></h1>
 
 ###  - 👀 I’m interested in C++, Python, Java.
-###  - 📫 How to reach me 
 <div style="position:relative;text-align:left;">
   <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/Color/Instagram.svg?raw=true" alt="Instagram" width="25" height="25" style="position:absolute;top:0;left:0;">
   <strong>abhinav.ranish</strong>
