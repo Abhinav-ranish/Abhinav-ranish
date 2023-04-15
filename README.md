@@ -3,7 +3,7 @@
 
 <p align="center">
   <b>~ Profile Visits ~</b><br><br>
-  <img src="https://profile-counter.glitch.me/GsDeluxe/count.svg" />
+  <img src="https://profile-counter.glitch.me/abhinav-ranish/count.svg" />
 </p>
 
 ###  - 👀 I’m interested in C++, Python, Java.
