@@ -1,5 +1,5 @@
 <h1 align="center">Hi 👋, I'm Abhinav Ranish</h1>
-<h3 align="center">CS @ Cybersequrity Student at ASU</h3>
+<h3 align="center">CS @ Cybersecurity Student at ASU</h3>
 
 <p align="center">
   <b>~ Profile Visits ~</b><br><br>
