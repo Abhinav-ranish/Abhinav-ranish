@@ -11,13 +11,18 @@
 <h1></h1>
 
 ###  - 👀 I’m interested in Python, Penetration Testing, C++, Java.
-<div style="position:relative;text-align:left;">
-  <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/White/Instagram_white.svg?raw=true" alt="Instagram" width="25" height="25" style="position:absolute;top:0;left:0;">
-  <strong>abhinav.ranish</strong>
+<div style="position:relative;text-align:center;">
+  <a href="https://www.instagram.com/abhinav.ranish/">
+    <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/White/Instagram_white.svg?raw=true" alt="Instagram" width="25" height="25" style="display:block;margin:auto;">
+    <strong>abhinav.ranish</strong>
+  </a>
 </div>
-<div style="position:relative;text-align:left;">
-  <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/White/LinkedIN_white.svg?raw=true" alt="Instagram" width="25" height="25" style="position:absolute;top:0;left:0;">
-  <strong>abhinav-ranish</strong>
+<br>
+<div style="position:relative;text-align:center;">
+  <a href="https://www.linkedin.com/in/abhinav-ranish/">
+    <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/White/LinkedIN_white.svg?raw=true" alt="LinkedIn" width="25" height="25" style="display:block;margin:auto;">
+    <strong>abhinav-ranish</strong>
+  </a>
 </div>
 
 <h1></h1>
