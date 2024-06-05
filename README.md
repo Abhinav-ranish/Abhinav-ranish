@@ -41,7 +41,10 @@
   <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/Color/Instagram.svg?raw=true" alt="Instagram" width="25" height="25">
   <br>abhinav.ranish
 </p>
-
+<p align="center">
+    <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/White/LinkedIN_white.svg?raw=true" alt="LinkedIn" width="25" height="25">
+    <br>abhinavranish
+</p>
 
 <!---
 Abhinav-ranish/Abhinav-ranish is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
