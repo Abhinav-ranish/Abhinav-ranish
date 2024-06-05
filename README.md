@@ -38,11 +38,13 @@
 <h1></h1>
 <h1 align="center">📫 How to reach me </h1>
 <p align="center">
-  <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/Color/Instagram.svg?raw=true" alt="Instagram" width="25" height="25">
+  <a href="https://www.instagram.com/abhinav.ranish/" style="text-decoration:none;">
+  <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/Color/Instagram.svg?raw=true" alt="Instagram" width="25" height="25"></a>
   <br>abhinav.ranish
 </p>
 <p align="center">
-    <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/White/LinkedIN_white.svg?raw=true" alt="LinkedIn" width="25" height="25">
+    <a href="https://www.linkedin.com/in/abhinavranish/" style="text-decoration:none;">
+    <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/White/LinkedIN_white.svg?raw=true" alt="LinkedIn" width="25" height="25"></a>
     <br>abhinavranish
 </p>
 
