@@ -23,7 +23,7 @@
 <div style="position:relative;text-align:center;text-decoration:none;">
   <a href="https://www.linkedin.com/in/abhinavranish/" style="text-decoration:none;">
     <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/White/LinkedIN_white.svg?raw=true" alt="LinkedIn" width="25" height="25" style="display:block;margin-right:10px;">
-    <p1 style="display:block;">abhinav-ranish</p1>
+    <p1 style="display:block;">abhinavranish</p1>
   </a>
 </div>
 <h1></h1>
