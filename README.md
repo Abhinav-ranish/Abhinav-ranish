@@ -24,7 +24,7 @@
 
 <p><img align="center" src="https://github-readme-streak-stats.herokuapp.com/?user=abhinav-ranish&theme=dark" alt="abhinav-ranish" /></p>
 
-[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=Abhinav-ranish&layout=compact&theme=radical)](https://github.com/Abhinav-ranish/github-readme-stats)
+[![Top Langs](https://github-readme-stats.vercel.app/api/top-langs/?username=Abhinav-ranish&layout=compact&theme=radical&exclude_repo=TOS-VIOLATOR,Oath-Server-Discord,cloudfared-pages))](https://github.com/Abhinav-ranish)
 
 <h1></h1>
 <h1 align="center">📫 How to reach me </h1>
