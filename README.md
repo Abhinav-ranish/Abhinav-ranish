@@ -25,7 +25,7 @@
 <h1></h1>
 
 
-![My GitHub stats](https://github-readme-stats.vercel.app/api?username=Abhinav-ranish&count_private=true&bg_color=30,e96443,904e95&title_color=fff&text_color=fff)
+![My GitHub stats](https://github-readme-stats.vercel.app/api?username=Abhinav-ranish&count_private=false&bg_color=30,e96443,904e95&title_color=fff&text_color=fff)
 
 <p><img align="center" src="https://github-readme-streak-stats.herokuapp.com/?user=abhinav-ranish&theme=dark" alt="abhinav-ranish" /></p>
 
