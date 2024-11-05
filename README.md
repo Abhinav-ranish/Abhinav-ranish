@@ -1,21 +1,22 @@
 <h1 align="center">Abhinav Ranish</h1>
 <h3 align="center">Computer Science - Cybersecurity Researcher / Justice Studies</h3>
 
-<table width="100%">
-  <tr>
-    <td align="left">
-      <b>~ Profile Visits ~</b><br>
-      <img src="https://profile-counter.glitch.me/abhinav-ranish/count.svg" alt="Profile Visits">
-    </td>
-    <td align="right">
-      <a href="https://www.linkedin.com/in/abhinavranish/" target="_blank" style="text-decoration:none;">
-        <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/White/LinkedIN_white.svg?raw=true" alt="LinkedIn" width="30" height="30">
-      </a>
-      <br>abhinavranish
-    </td>
-  </tr>
-</table>
+<div style="display: flex; justify-content: space-between; align-items: center;">
 
+  <p align="right">
+    <a href="https://www.linkedin.com/in/abhinavranish/" target="_blank" style="text-decoration:none;">
+      <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/White/LinkedIN_white.svg?raw=true" alt="LinkedIn" width="30" height="30">
+    </a><br>abhinavranish<br>
+    &nbsp;&nbsp;&nbsp;
+    <a href="mailto:presidentofjoy@asu.edu" style="text-decoration:none; color:inherit;">presidentofjoy@asu.edu</a>
+  </p>
+
+  <p align="left">
+    <b>~ Profile Visits ~</b> &nbsp;&nbsp;&nbsp;
+    <img src="https://profile-counter.glitch.me/abhinav-ranish/count.svg" alt="Profile Visits">
+  </p>
+
+</div>
 
 ---
 
@@ -44,9 +45,11 @@
 <p align="center">
   <img src="https://github-readme-streak-stats.herokuapp.com/?user=abhinav-ranish&theme=dark" alt="GitHub Streak">
 </p>
-
-[![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=Abhinav-ranish&layout=compact&theme=radical&size_weight=0.1&count_weight=0.9&exclude_repo=Internship-Website)](https://github.com/Abhinav-ranish)
-
+<p align="center">
+  <img src="https://github-readme-stats.vercel.app/api/top-langs/?username=Abhinav-ranish&layout=compact&theme=radical&size_weight=0.1&count_weight=0.9" alt="Top Language">
+</p>
+<!---
+    to exclude repos from the top languages just add &exclude_repo=Internship-Website
 ---
 
 <h1 align="center">📫 How to Reach Me</h1>
