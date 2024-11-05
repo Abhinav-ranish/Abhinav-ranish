@@ -1,9 +1,9 @@
 
 
-<h1 align="center">Hi 👋, I'm Abhinav Ranish</h1>
+<h1 align="center">Abhinav Ranish</h1>
 <h3 align="center">Computer Science - Cybersecurity Researcher / Justice Studies</h3>
 
-<p align="center">
+<p align="left">
   <b>~ Profile Visits ~</b><br><br>
   <img src="https://profile-counter.glitch.me/abhinav-ranish/count.svg" alt="Profile Visits">
 </p>
