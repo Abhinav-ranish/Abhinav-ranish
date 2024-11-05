@@ -1,19 +1,18 @@
-
-
 <h1 align="center">Abhinav Ranish</h1>
 <h3 align="center">Computer Science - Cybersecurity Researcher / Justice Studies</h3>
 
-<p align="left">
-  <b>~ Profile Visits ~</b><br><br>
+<div align="left">
+  <p><b>~ Profile Visits ~</b></p>
   <img src="https://profile-counter.glitch.me/abhinav-ranish/count.svg" alt="Profile Visits">
-</p>
+</div>
 
-<p align="right">
+<div align="right">
     <a href="https://www.linkedin.com/in/abhinavranish/" target="_blank" style="text-decoration:none;">
       <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/White/LinkedIN_white.svg?raw=true" alt="LinkedIn" width="30" height="30">
     </a>
-    <br>abhinavranish
-</p>
+    <br><span>abhinavranish</span>
+</div>
+
 
 ---
 
