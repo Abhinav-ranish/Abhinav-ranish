@@ -8,6 +8,13 @@
   <img src="https://profile-counter.glitch.me/abhinav-ranish/count.svg" alt="Profile Visits">
 </p>
 
+<p align="right">
+    <a href="https://www.linkedin.com/in/abhinavranish/" target="_blank" style="text-decoration:none;">
+      <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/White/LinkedIN_white.svg?raw=true" alt="LinkedIn" width="30" height="30">
+    </a>
+    <br>abhinavranish
+</p>
+
 ---
 
 ### 👀 About Me
@@ -23,17 +30,6 @@
 - **Languages:** Python, C++, Java
 - **Cybersecurity:** Penetration Testing, Ethical Hacking, Vulnerability Assessment
 - **Other Tools:** Git, Linux, Wireshark
-
----
-
-### 🌐 Connect with Me
-
-<p align="center">
-    <a href="https://www.linkedin.com/in/abhinavranish/" target="_blank" style="text-decoration:none;">
-      <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/White/LinkedIN_white.svg?raw=true" alt="LinkedIn" width="30" height="30">
-    </a>
-    <br>abhinavranish
-</p>
 
 ---
 
