@@ -22,17 +22,9 @@
 
 ### 👀 About Me
 
-- **I'm interested in:** Python, Penetration Testing, C++, Java
-- **Currently learning:** Advanced cybersecurity techniques and ethical hacking
-- **Open to:** Collaborations on cybersecurity projects, internships, and discussions about technology!
-
----
-
-### 🛠️ Skills and Tools
-
-- **Languages:** Python, C++, Java
-- **Cybersecurity:** Penetration Testing, Ethical Hacking, Vulnerability Assessment
-- **Other Tools:** Git, Linux, Wireshark
+- **I'm interested in:** Coding, Finding Bugs, Drinking Coffee ☕
+- **Currently learning:** AI/ML development, Ethical Hacking 
+- **Open to:** Collaborations on cyber, quant and ML projects.
 
 ---
 
