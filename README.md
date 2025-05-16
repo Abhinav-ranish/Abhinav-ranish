@@ -1,5 +1,5 @@
 <h1 align="center">Abhinav Ranish</h1>
-<h3 align="center">Computer Science - Cybersecurity Researcher / Justice Studies</h3>
+<h3 align="center">Computer Science - Cybersecurity  / Software Development / Justice Studies</h3>
 
 <div style="display: flex; justify-content: space-between; align-items: center;">
 
