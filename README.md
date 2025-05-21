@@ -8,7 +8,7 @@
       <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/White/LinkedIN_white.svg?raw=true" alt="LinkedIn" width="30" height="30">
     </a><br>abhinavranish<br>
     &nbsp;&nbsp;&nbsp;
-    <a href="mailto:presidentofjoy@asu.edu" style="text-decoration:none; color:inherit;">presidentofjoy@asu.edu</a>
+    <a href="mailto:presidentofjoy@asu.edu" style="text-decoration:none; color:inherit;">chatgpt@asu.edu</a>
   </p>
 
   <p align="left">
