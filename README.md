@@ -31,8 +31,12 @@
 ### 📊 GitHub Stats
 
 <p align="center">
-  <img src="https://github-readme-stats.vercel.app/api?username=Abhinav-ranish&count_private=true&bg_color=30,e96443,904e95&title_color=fff&text_color=fff" alt="GitHub Stats">
+  <img 
+    src="https://github-readme-stats.vercel.app/api?username=Abhinav-ranish&show_icons=true&count_private=true&include_all_commits=true&hide_rank=false&custom_title=Abhi's%20Dev%20Stats&bg_color=30,e96443,904e95&title_color=ffffff&text_color=ffffff&icon_color=ffce00&border_radius=10&hide_border=false" 
+    alt="Abhinav's GitHub Stats"
+  />
 </p>
+
 
 <p align="center">
   <img src="https://github-readme-streak-stats.herokuapp.com/?user=abhinav-ranish&theme=dark" alt="GitHub Streak">
