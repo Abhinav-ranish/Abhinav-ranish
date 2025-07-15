@@ -12,7 +12,8 @@
   </p>
 
   <p align="left">
-    <img src="https://aranish.uk/api/visit/badge" alt="Profile Visits">
+    <img src="https://aranish.uk/api/visit/badge-redirect" alt="Profile Visits"> 
+<!--     this forces the github pull again cus there is a redirect idk if it works lets see -->
   </p>
 
 </div>
