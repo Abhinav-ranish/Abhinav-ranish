@@ -12,8 +12,7 @@
   </p>
 
   <p align="left">
-    <b>~ Profile Visits ~</b> &nbsp;&nbsp;&nbsp;
-    <img src="https://profile-counter.glitch.me/abhinav-ranish/count.svg" alt="Profile Visits">
+    <img src="https://aranish.uk/api/visit/badge" alt="Profile Visits">
   </p>
 
 </div>
@@ -31,7 +30,7 @@
 ### 📊 GitHub Stats
 
 <p align="center">
-  <img src="https://githubreadme-teal.vercel.app/api?username=Abhinav-ranish&count_private=true&bg_color=30,e96443,904e95&title_color=fff&text_color=fff" alt="GitHub Stats">
+  <img src="https://github-readme-stats.vercel.app/api?username=Abhinav-ranish&count_private=true&bg_color=30,e96443,904e95&title_color=fff&text_color=fff" alt="GitHub Stats">
 </p>
 
 <p align="center">
