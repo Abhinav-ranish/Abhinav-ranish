@@ -1,8 +1,8 @@
 name: Metrics
 on:
-  schedule: [{cron: "0 2 * * *"}]
+  schedule: [{ cron: "0 2 * * *" }]
   workflow_dispatch:
-  push: {branches: ["main"]}
+  push: { branches: ["main"] }
 
 jobs:
   github-metrics:
@@ -16,12 +16,16 @@ jobs:
           user: Abhinav-ranish
           template: classic
           filename: github-metrics.svg
-          token: ${{ secrets.GITHUB_TOKEN }}
+
+          # IMPORTANT: PAT with private repo access
+          token: ${{ secrets.METRICS_TOKEN }}
 
           # Good defaults
           base: header, activity, community, repositories, metadata
+
           plugin_languages: yes
           plugin_languages_ignored: html, css
           plugin_languages_limit: 8
+
           plugin_followup: yes
           plugin_followup_sections: repositories
