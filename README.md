@@ -37,6 +37,15 @@
 
 ---
 
+  ### 🛠️  Featured Project
+
+  **[CVfy](https://cvfy.dev)** — an AI resume-to-portfolio website builder that I created and maintain. Upload a
+  resume, pick from 40+ themes, and publish a live portfolio at `cvfy.dev/yourname`. 
+
+  🔗 **[cvfy.dev](https://cvfy.dev)** · [Who made it](https://cvfy.dev/about)
+
+  ---
+
 <h3 align="left">Connect with me:</h3>
 <p align="left">
   <a href="https://github.com/Abhinav-ranish" target="_blank">
