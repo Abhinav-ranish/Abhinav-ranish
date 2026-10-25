@@ -60,7 +60,8 @@ jobs:
           grep -o 'srcset="\./assets/[^"]*"' README.md | cut -d'"' -f2 | while read -r src; do
             grep -q "$src" rendered.html || { echo "stripped: $src"; exit 1; }
           done
-          ! grep -q 'style=' <(grep -v '^<!--' README.md)
+          # a style attribute, not a ?style= query param in an image URL
+          ! grep -qE '[[:space:]]style=' <(grep -v '^<!--' README.md)
 
       - uses: actions/upload-artifact@v4
         with:
