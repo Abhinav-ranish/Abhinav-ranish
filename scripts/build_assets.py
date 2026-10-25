@@ -69,8 +69,11 @@ FONTS = {
     "bold": "Inter-Bold.ttf",
     "semi": "Inter-SemiBold.ttf",
     "ml": "NotoSansMalayalam-Bold.ttf",
+    "zh": "NotoSansCJKsc-Bold.otf",
+    "ar": "NotoSansArabic-Bold.ttf",
 }
-NAME_ML = "അഭിനവ് റനീഷ്"
+# the hero's second line cycles through these (font key, text); the first is the resting frame
+NAME_ALT = [("ml", "അഭിനവ് റനീഷ്"), ("zh", "阿比纳夫·拉尼什"), ("ar", "أبهيناف رانيش")]
 
 
 def log(*a):
@@ -332,13 +335,24 @@ def hero(theme):
 .role{{animation:rise .7s {EASE} 1.3s backwards}}
 .cur{{animation:blink 1.1s steps(1) 2s 3}}
 @keyframes blink{{50%{{opacity:0}}}}
+.alt0{{animation:alt0 9s ease-in-out 3s infinite}}
+@keyframes alt0{{0%,28%{{opacity:1}}33%,95%{{opacity:0}}100%{{opacity:1}}}}
+.alt1{{animation:alt1 9s ease-in-out 3s infinite}}
+@keyframes alt1{{0%,28%{{opacity:0}}33%,61%{{opacity:1}}66%,100%{{opacity:0}}}}
+.alt2{{animation:alt2 9s ease-in-out 3s infinite}}
+@keyframes alt2{{0%,61%{{opacity:0}}66%,95%{{opacity:1}}100%{{opacity:0}}}}
 """
     # solid name: the sunset carries the colour, the type stays quiet
     name, nw, ng = ptext("bold", "Abhinav Ranish", 132, W / 2, 182, p["fg"], "middle", max_w=900, glyph_cls="ng")
     stagger = "".join(f".ng{i}{{animation-delay:{.035 * i:.3f}s}}" for i in range(ng))
-    # Malayalam sits clear of the sun (sun top = HZ - SUN_R = 280)
-    ml, _, _ = ptext("ml", NAME_ML, 46, W / 2, 250, p["mut"], "middle", cls="ml")
-    role, rw, _ = ptext("semi", HERO_ROLE, 36, W / 2 - 14, 424, p["fg"], "middle", max_w=1040)
+    # the name in Malayalam, Chinese, Arabic, crossfading in place; clear of the sun
+    # (sun top = HZ - SUN_R = 280). Only the first shows at rest / with reduced motion.
+    alts = []
+    for i, (key, text) in enumerate(NAME_ALT):
+        svg, _, _ = ptext(key, text, 40, W / 2, 250, p["mut"], "middle", max_w=520)
+        alts.append(f'<g class="alt{i}">{svg}</g>' if i == 0 else f'<g class="alt{i} script-alt" opacity="0">{svg}</g>')
+    ml = f'<g class="ml">{"".join(alts)}</g>'
+    role, rw, _ = ptext("semi", HERO_ROLE, 30, W / 2 - 12, 422, p["fg"], "middle", max_w=1040)
     s1, s2 = p["sun"]
     defs = (
         f'<radialGradient id="sg" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="{s1}"/>'
@@ -352,7 +366,7 @@ def hero(theme):
     vx = W / 2
     floor = [f'<line x1="{vx}" y1="{HZ}" x2="{vx + k * 260}" y2="{H}"/>' for k in range(-4, 5)]
     floor += [f'<line x1="0" y1="{f1(HZ + d)}" x2="{W}" y2="{f1(HZ + d)}"/>' for d in (8, 20, 37, 60, 90)]
-    cx = W / 2 - 14 + rw / 2 + 12  # cursor sits right after the measured role outline
+    cx = W / 2 - 12 + rw / 2 + 10  # cursor sits right after the measured role outline
     # the saguaro sprouts right of the sun once it has risen; its top (~225) clears the name
     cac_css, cac = cactus(p, 960, HZ, 1.0, 2.2)
     css += cac_css
@@ -367,7 +381,7 @@ def hero(theme):
         f'<path class="hz" d="M{W / 2} {HZ}H{W - 40}" stroke="{p["line2"]}" stroke-width="1.5" stroke-dasharray="600"/>'
         f'<path class="hz" d="M{W / 2} {HZ}H40" stroke="{p["line2"]}" stroke-width="1.5" stroke-dasharray="600"/>'
         f'<g clip-path="url(#sky)">{cac}</g>'
-        f'<g class="role">{role}<rect class="cur" x="{f1(cx)}" y="396" width="16" height="34" fill="{p["accent"]}"/></g>'
+        f'<g class="role">{role}<rect class="cur" x="{f1(cx)}" y="400" width="13" height="28" fill="{p["accent"]}"/></g>'
         f'</g><rect x=".75" y=".75" width="{W - 1.5}" height="{H - 1.5}" rx="23.5" fill="none" stroke="{p["line"]}" stroke-width="1.5"/>'
     )
     return svg_doc(W, H, "Abhinav Ranish (അഭിനവ് റനീഷ്)",
@@ -437,7 +451,10 @@ def button(theme, idx, slug, label, si, primary=False):
 # ----------------------------------------------------------------------------
 # PRODUCT CARDS
 # ----------------------------------------------------------------------------
-CW, CH = 1000, 320
+CW, CH = 600, 390
+# Cards sit two-up at half width, so they read at body-text scale. The art is
+# drawn in a 1000x320 frame and scaled into the top-left; copy sits underneath.
+ART = 'transform="translate(9 11) scale(.62)"'
 # Card copy. Claims checked against the live sites on 2026-10-25; the SVG
 # subtitle and the README alt text are built from the same strings.
 FOCUS = dict(title="Focus Spoofer", hook="Switch tabs. The page never knows.", sub="Chrome extension · open source",
@@ -446,7 +463,7 @@ CVFY = dict(title="CVfy", hook="Your resume, already a website.", sub="PDF or DO
             desc="Upload the resume you already have and get a themed site you can edit and publish.")
 
 
-def card_frame(p, offset, glow_x=180):
+def card_frame(p, offset, glow_x=124):
     per = rr_perimeter(CW - 3, CH - 3, 22)
     css = (f".edge{{stroke-dasharray:{per:.0f};animation:edge 1.6s {EASE} {offset:.2f}s backwards}}"
            f"@keyframes edge{{from{{stroke-dashoffset:{per:.0f}}}}}"
@@ -454,8 +471,7 @@ def card_frame(p, offset, glow_x=180):
            f".live{{animation:pulse 2.2s ease-in-out {offset + 2.6:.2f}s 3}}@keyframes pulse{{50%{{opacity:.3}}}}"
            f"@keyframes fade{{from{{opacity:0}}}}")
     defs = (f'<radialGradient id="glow" cx="{glow_x / CW:.2f}" cy=".5" r=".55"><stop offset="0" stop-color="{p["glow"]}" '
-            f'stop-opacity="{p["glow_op"]}"/><stop offset="1" stop-color="{p["glow"]}" stop-opacity="0"/></radialGradient>'
-            f'<clipPath id="cardclip"><rect x="1.5" y="1.5" width="{CW - 3}" height="{CH - 3}" rx="22"/></clipPath>')
+            f'stop-opacity="{p["glow_op"]}"/><stop offset="1" stop-color="{p["glow"]}" stop-opacity="0"/></radialGradient>')
     back = (f'<rect x="1.5" y="1.5" width="{CW - 3}" height="{CH - 3}" rx="22" fill="{p["card"]}" stroke="{p["line"]}"/>'
             f'<rect x="1.5" y="1.5" width="{CW - 3}" height="{CH - 3}" rx="22" fill="url(#glow)"/>')
     edge = (f'<rect class="edge" x="1.5" y="1.5" width="{CW - 3}" height="{CH - 3}" rx="22" fill="none" '
@@ -464,21 +480,21 @@ def card_frame(p, offset, glow_x=180):
 
 
 def status_pill(p, label, offset):
-    lab, lw, _ = ptext("semi", label, 26, 0, 0, p["fg"])  # measure first
-    w = lw + 66
-    x = CW - 34 - w
-    lab, _, _ = ptext("semi", label, 26, x + 44, 61, p["fg"])
+    lab, lw, _ = ptext("semi", label, 21, 0, 0, p["fg"])  # measure first
+    w = lw + 54
+    x = CW - 28 - w
+    lab, _, _ = ptext("semi", label, 21, x + 36, 55, p["fg"])
     return (f'<g class="rise" style="animation-delay:{offset + .2:.2f}s">'
-            f'<rect x="{f1(x)}" y="28" width="{f1(w)}" height="44" rx="22" fill="{p["raised"]}" stroke="{p["line2"]}"/>'
-            f'<circle class="live" cx="{f1(x + 24)}" cy="50" r="7" fill="{p["ok"]}"/>{lab}</g>')
+            f'<rect x="{f1(x)}" y="28" width="{f1(w)}" height="36" rx="18" fill="{p["raised"]}" stroke="{p["line2"]}"/>'
+            f'<circle class="live" cx="{f1(x + 20)}" cy="46" r="6" fill="{p["ok"]}"/>{lab}</g>')
 
 
 def card_text(p, offset, c):
-    # Mobile rule: no copy under 28 units in this 1000-wide card.
-    X, MAXW = 380, 590
-    t, _, _ = ptext("bold", c["title"], 76, X, 130, p["fg"], max_w=MAXW)
-    h, _, _ = ptext("semi", c["hook"], 40, X, 192, p["fg"], max_w=MAXW)
-    s, _, _ = ptext("semi", c["sub"], 30, X, 246, p["mut"], max_w=MAXW)
+    # At half width (~410px) these land near the README's own type: ~31/18/14px.
+    X, MAXW = 34, CW - 68
+    t, _, _ = ptext("bold", c["title"], 46, X, 268, p["fg"], max_w=MAXW)
+    h, _, _ = ptext("semi", c["hook"], 26, X, 314, p["fg"], max_w=MAXW)
+    s, _, _ = ptext("semi", c["sub"], 21, X, 352, p["mut"], max_w=MAXW)
     return (f'<g class="rise" style="animation-delay:{offset + .3:.2f}s">{t}</g>'
             f'<g class="rise" style="animation-delay:{offset + .45:.2f}s">{h}</g>'
             f'<g class="rise" style="animation-delay:{offset + .6:.2f}s">{s}</g>')
@@ -517,7 +533,7 @@ def card_focus(theme):
                      f'<rect x="60" y="{y}" width="250" height="32" rx="9" fill="{p["raised"]}" stroke="{p["line2"]}"/>'
                      f'<circle cx="80" cy="{y + 16}" r="5" fill="{col}"/>'
                      + mtext(lab, 96, y + 22, 17, p["fg"], weight=600) + "</g>")
-    body = (back + glyph + f'<g clip-path="url(#cardclip)">{"".join(chips)}</g>' + "".join(pills)
+    body = (back + f'<g {ART}>' + glyph + "".join(chips) + "".join(pills) + "</g>"
             + card_text(p, o, FOCUS) + status_pill(p, "focus.oddworks.us", o) + edge)
     return svg_doc(CW, CH, "Focus Spoofer: switch tabs, the page never knows", card_alt(FOCUS), css, body, defs)
 
@@ -557,7 +573,7 @@ def card_cvfy(theme):
            + blk(5, f'<rect x="64" y="236" width="150" height="8" rx="4" fill="{p["mut"]}" opacity=".35"/>'
                     f'<rect x="64" y="252" width="110" height="8" rx="4" fill="{p["mut"]}" opacity=".25"/>')
            + "</g>")
-    body = (back + win + pdf + card_text(p, o, CVFY) + status_pill(p, "cvfy.dev", o) + edge)
+    body = (back + f'<g {ART}>{win}{pdf}</g>' + card_text(p, o, CVFY) + status_pill(p, "cvfy.dev", o) + edge)
     return svg_doc(CW, CH, "CVfy: your resume, already a website", card_alt(CVFY), css, body, defs)
 
 

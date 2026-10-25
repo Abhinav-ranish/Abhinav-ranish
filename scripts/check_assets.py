@@ -27,7 +27,7 @@ ASSETS = ROOT / "assets"
 SVGNS = "{http://www.w3.org/2000/svg}"
 PER_FILE = 150 * 1024
 TOTAL = 1536 * 1024
-DECOR = {"chip", "pdf"}  # intro-only elements that exit the frame by design
+DECOR = {"chip", "pdf", "script-alt"}  # intro-only elements, and alternate-script names hidden at rest by design
 FORBIDDEN = [
     (re.compile(r"<script", re.I), "<script>"),
     (re.compile(r"foreignObject"), "foreignObject"),
