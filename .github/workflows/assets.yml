@@ -1,6 +1,5 @@
 name: Profile assets
 on:
-  schedule: [{ cron: "23 9 * * *" }]
   workflow_dispatch:
   push:
     branches: ["main"]
@@ -28,9 +27,7 @@ jobs:
 
       # Stdlib only. Display text comes from assets/src/textpaths.json; the
       # script only needs fonttools + uharfbuzz when that text changes.
-      - name: Build SVGs and README sections
-        env:
-          GH_TOKEN: ${{ secrets.METRICS_TOKEN }}
+      - name: Build SVGs and README alt text
         run: python scripts/build_assets.py
 
       - name: Install validators
@@ -73,4 +70,4 @@ jobs:
       - uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "chore(profile): refresh assets [skip ci]"
-          file_pattern: "assets/*.svg assets/src/data.json assets/src/textpaths.json README.md"
+          file_pattern: "assets/*.svg assets/src/textpaths.json README.md"

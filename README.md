@@ -12,13 +12,14 @@
 <a href="https://www.linkedin.com/in/abhinavranish/"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/btn-linkedin-dark.svg"><img alt="LinkedIn" src="./assets/btn-linkedin-light.svg" height="36"></picture></a>
 <a href="mailto:chatgpt@asu.edu"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/btn-email-dark.svg"><img alt="Email" src="./assets/btn-email-light.svg" height="36"></picture></a>
 <a href="https://x.com/madebyabhinav"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/btn-x-dark.svg"><img alt="X @madebyabhinav" src="./assets/btn-x-light.svg" height="36"></picture></a>
+<a href="https://aranish.uk"><picture><source media="(prefers-color-scheme: dark)" srcset="https://aranish.uk/api/visit/badge-redirect?style=pill&theme=dark"><img alt="profile visits" src="https://aranish.uk/api/visit/badge-redirect?style=pill&theme=light" height="36"></picture></a>
 <br>
 <sub>or email <a href="mailto:chatgpt@asu.edu">chatgpt@asu.edu</a></sub>
 </p>
 
 ### `abhinav@aranish ~ $ whoami`
 
-CS @ ASU (the Harvard of the West, source: trust me), building from Phoenix. I founded **contentOS** and **[ada](https://tryada.app)**, built **[CVfy](https://cvfy.dev)** and **[Focus Spoofer](https://focus.oddworks.us)**; before that, PM @ TruckerPath, security @ Ampcus and IT/Azure @ QFCRA.
+CS @ ASU (the Harvard of the West, source: trust me), building from Phoenix. I founded **[contentOS](https://trycos.ai)** and **[ada](https://tryada.app)**, built **[CVfy](https://cvfy.dev)** and **[Focus Spoofer](https://focus.oddworks.us)**; before that, PM @ TruckerPath, security @ Ampcus and IT/Azure @ QFCRA.
 
 ### `~ $ ls ./building`
 
@@ -42,7 +43,7 @@ CS @ ASU (the Harvard of the West, source: trust me), building from Phoenix. I f
 
 <sub>&nbsp;&nbsp;visibility + focus spoofing · canvas/WebGL/audio fingerprint randomization · <a href="https://github.com/Abhinav-ranish/Focus-Spoofer">source on GitHub</a></sub>
 
-<sub>&nbsp;&nbsp;also building: <a href="https://tryada.app">ada</a>, the share button as an AI assistant · contentOS</sub>
+<sub>&nbsp;&nbsp;also building: <a href="https://tryada.app">ada</a>, the share button as an AI assistant · <a href="https://trycos.ai">contentOS</a></sub>
 
 ### `~ $ ls ./shipped`
 
@@ -57,16 +58,6 @@ CS @ ASU (the Harvard of the West, source: trust me), building from Phoenix. I f
 
 <sub>also: <a href="https://readflow.aranish.uk">Readflow</a> · <a href="https://stock.aranish.uk">AI-Stock-Analyzer</a> · <a href="https://github.com/Abhinav-ranish/blackbox-lunar">blackbox-lunar</a> · <a href="https://github.com/Abhinav-ranish/PII-Redactor">PII-Redactor</a></sub>
 
-### `~ $ airflow dags trigger abhinav_daily`
-
-<p align="center">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./assets/pipeline-dark.svg">
-    <source media="(prefers-color-scheme: light)" srcset="./assets/pipeline-light.svg">
-    <img alt="DAG abhinav_daily: extract_annoyances (ASU logins, tab chaos), build_prototype (ts, python, swift), harden_security (PII-Redactor, write guard), deploy (*.aranish.uk, vercel), ship (CVfy, Focus Spoofer). 5 of 5 tasks succeeded." src="./assets/pipeline-light.svg" width="520">
-  </picture>
-</p>
-
 <details>
 <summary><b><code>~ $ which tools</code></b> <sub>(click to expand)</sub></summary>
 <br>
@@ -74,23 +65,8 @@ CS @ ASU (the Harvard of the West, source: trust me), building from Phoenix. I f
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="./assets/stack-dark.svg">
   <source media="(prefers-color-scheme: light)" srcset="./assets/stack-light.svg">
-  <img alt="Ship: TypeScript, React, Next.js, Tailwind CSS, Vite, Swift, Prisma, Node.js. Data and AI: Python, PostgreSQL, MongoDB, Selenium, Claude. Infra and security: Docker, Vercel, Cloudflare, GitHub Actions, Linux, Bash, Burp Suite, Wireshark, Kali Linux." src="./assets/stack-light.svg" width="100%">
+  <img alt="BUILD: TypeScript, React, Next.js, Tailwind CSS, Vite, Node.js, Swift, Tauri, Go. DATA: Python, PostgreSQL, Neon, MongoDB, Prisma, OpenTelemetry. AI: Claude, Codex, T3 Code, Grok, Grokbot, dots, Muse, Kimi, Qwen, OpenCode. CLOUD: AWS, Azure, Cloudflare, Vercel, Docker, GitHub Actions, Git, Linux, Bash. SEC &amp; QA: Playwright, Selenium, Burp Suite, Wireshark, Kali Linux." src="./assets/stack-light.svg" width="100%">
 </picture>
-
-</details>
-
-<details>
-<summary><b><code>~ $ tail -n 6 activity.log</code></b> <sub>(recently shipped)</sub></summary>
-<br>
-
-<!--START_SECTION:activity-->
-- <code>2026-10-25</code> pushed to [Abhinav-ranish/Abhinav-ranish](https://github.com/Abhinav-ranish/Abhinav-ranish)
-- <code>2026-10-23</code> opened PR [Abhinav-ranish/Focus-Spoofer#15](https://github.com/Abhinav-ranish/Focus-Spoofer/pull/15)
-- <code>2026-10-20</code> pushed to [Abhinav-ranish/swarm-persona](https://github.com/Abhinav-ranish/swarm-persona)
-- <code>2026-10-14</code> opened PR [Abhinav-ranish/Focus-Spoofer#14](https://github.com/Abhinav-ranish/Focus-Spoofer/pull/14)
-- <code>2026-10-14</code> opened PR [Abhinav-ranish/Focus-Spoofer#13](https://github.com/Abhinav-ranish/Focus-Spoofer/pull/13)
-- <code>2026-10-11</code> opened PR [aranish-uk/ux-guardian#3](https://github.com/aranish-uk/ux-guardian/pull/3)
-<!--END_SECTION:activity-->
 
 </details>
 
@@ -103,7 +79,5 @@ CS @ ASU (the Harvard of the West, source: trust me), building from Phoenix. I f
 </picture>
 
 <p align="center">
-  <a href="https://aranish.uk"><img src="https://aranish.uk/api/visit/badge-redirect" alt="profile visits"></a>
-  <br>
-  <sub>Every custom visual here is generated by <a href="./scripts/build_assets.py">scripts/build_assets.py</a> · the visit counter is self-hosted on aranish.uk</sub>
+  <sub>Every custom visual here is generated by <a href="./scripts/build_assets.py">scripts/build_assets.py</a></sub>
 </p>

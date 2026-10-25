@@ -3,10 +3,9 @@
 
 Usage
   python scripts/build_assets.py              # build all assets (uses cached glyph outlines)
-  python scripts/build_assets.py --offline    # never call the GitHub API, use assets/src/data.json
   python scripts/build_assets.py --fetch-icons  # (re)download icon sources into assets/src/icons/
 
-Daily CI runs need only the Python standard library. Display text is drawn as
+CI runs need only the Python standard library. Display text is drawn as
 path outlines. Outlines live in assets/src/textpaths.json. When display text
 changes, run scripts/fetch_fonts.sh once and install `fonttools uharfbuzz`:
 the text is shaped with HarfBuzz (needed for Malayalam conjuncts, vowel signs
@@ -23,13 +22,11 @@ Every SVG obeys the same rules:
 from __future__ import annotations
 
 import argparse
-import datetime as dt
 import json
 import math
 import os
 import re
 import sys
-import urllib.error
 import urllib.request
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -40,11 +37,8 @@ ASSETS = ROOT / "assets"
 SRC = ASSETS / "src"
 FONT_DIR = Path(os.environ.get("FONT_DIR", SRC / "fonts"))
 TEXT_CACHE = SRC / "textpaths.json"
-DATA_FILE = SRC / "data.json"
 ICON_DIR = SRC / "icons"
 README = ROOT / "README.md"
-USER = "Abhinav-ranish"
-OWN_ORGS = ["aranish-uk", "Ada-The-AI-Secretary-For-Phones"]
 
 # ----------------------------------------------------------------------------
 # Tokens: "Phoenix Dusk"
@@ -275,129 +269,6 @@ def rr_perimeter(w, h, r):
 
 
 # ----------------------------------------------------------------------------
-# Data (GitHub GraphQL + REST), with last-good fallback
-# ----------------------------------------------------------------------------
-class Transient(Exception):
-    pass
-
-
-def gh_request(url, token, payload=None):
-    req = urllib.request.Request(url, headers={
-        "Authorization": f"bearer {token}",
-        "User-Agent": "profile-build-assets",
-        "Accept": "application/vnd.github+json",
-    })
-    if payload is not None:
-        req.data = json.dumps(payload).encode()
-        req.add_header("Content-Type", "application/json")
-    try:
-        with urllib.request.urlopen(req, timeout=30) as r:
-            return json.load(r)
-    except urllib.error.HTTPError as e:
-        if e.code >= 500 or e.code == 429:
-            raise Transient(f"HTTP {e.code}")
-        # GitHub's secondary rate limit is a 403 with retry-after, the primary
-        # one a 403 with x-ratelimit-remaining: 0. Both pass; keep last good data.
-        if e.code == 403 and (e.headers.get("retry-after") or e.headers.get("x-ratelimit-remaining") == "0"):
-            raise Transient("HTTP 403 rate limited")
-        raise
-    except (urllib.error.URLError, TimeoutError) as e:
-        raise Transient(str(e))
-
-
-def gql(token, query):
-    out = gh_request("https://api.github.com/graphql", token, {"query": query})
-    if out.get("errors"):
-        raise RuntimeError(json.dumps(out["errors"])[:600])
-    return out["data"]
-
-
-def fetch_data(token):
-    year_now = dt.date.today().year
-    years = range(2020, year_now + 1)
-    parts = [
-        f'y{y}:contributionsCollection(from:"{y}-01-01T00:00:00Z",to:"{y}-12-31T23:59:59Z")'
-        "{totalCommitContributions restrictedContributionsCount}" for y in years
-    ]
-    excl = " ".join(f"-org:{o}" for o in OWN_ORGS)
-    q_ext = f"is:pr is:merged author:{USER} -user:{USER} {excl}"
-    q = (
-        f'query{{user(login:"{USER}"){{createdAt '
-        "repositoriesContributedTo(includeUserRepositories:true){totalCount} "
-        + " ".join(parts) + "} "
-        f'ext:search(type:ISSUE,query:"{q_ext}",first:0){{issueCount}} '
-        f'rust:search(type:ISSUE,query:"{q_ext} repo:rust-lang/rust-by-example",first:0){{issueCount}}}}'
-    )
-    d = gql(token, q)
-    u = d["user"]
-    commits = sum(u[f"y{y}"]["totalCommitContributions"] + u[f"y{y}"]["restrictedContributionsCount"] for y in years)
-    return {
-        "commits": commits,
-        "prs_ext": d["ext"]["issueCount"],
-        "rust_prs": d["rust"]["issueCount"],
-        "repos_contrib": u["repositoriesContributedTo"]["totalCount"],
-        "products": 2,
-        "updated": dt.date.today().isoformat(),
-    }
-
-
-def fetch_activity(token):
-    ev = gh_request(f"https://api.github.com/users/{USER}/events/public?per_page=100", token)
-    lines, seen = [], set()
-    for e in ev:
-        repo = e["repo"]["name"]
-        day = e["created_at"][:10]
-        p = e.get("payload", {})
-        line = key = None
-        if e["type"] == "PullRequestEvent" and p.get("action") == "opened":
-            n = p.get("number") or p.get("pull_request", {}).get("number")
-            key = ("pr", repo, n)
-            line = f"opened PR [{repo}#{n}](https://github.com/{repo}/pull/{n})"
-        elif e["type"] == "ReleaseEvent":
-            tag = p.get("release", {}).get("tag_name", "release")
-            key = ("rel", repo, tag)
-            line = f"released [{repo} {tag}](https://github.com/{repo}/releases/tag/{tag})"
-        elif e["type"] == "CreateEvent" and p.get("ref_type") == "repository":
-            key = ("new", repo)
-            line = f"started [{repo}](https://github.com/{repo})"
-        elif e["type"] == "PushEvent":
-            key = ("push", repo)
-            line = f"pushed to [{repo}](https://github.com/{repo})"
-        if line and key not in seen:
-            seen.add(key)
-            lines.append(f"- <code>{day}</code> {line}")
-        if len(lines) >= 6:
-            break
-    return lines
-
-
-def load_data(offline):
-    cached = json.loads(DATA_FILE.read_text()) if DATA_FILE.exists() else None
-    token = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
-    activity = None
-    if offline or not token:
-        if not cached:
-            raise SystemExit("no token and no assets/src/data.json")
-        log("offline: using cached numbers from", cached.get("updated"))
-        return cached, None
-    try:
-        data = fetch_data(token)
-        activity = fetch_activity(token)
-    except Transient as e:
-        if not cached:
-            raise SystemExit(f"GitHub API unavailable ({e}) and no cache")
-        log("WARNING transient API error, keeping last good numbers:", e)
-        return cached, None
-    # A non-transient error (bad token, schema change) propagates and fails the
-    # job, so the last good SVGs stay committed.
-    # `updated` records when the numbers last changed, so an unchanged day
-    # leaves data.json (and the SVGs) byte-identical and the job commits nothing.
-    numeric = lambda d: {k: v for k, v in (d or {}).items() if k != "updated"}
-    if cached and numeric(cached) == numeric(data):
-        return cached, activity
-    DATA_FILE.write_text(json.dumps(data, indent=2) + "\n")
-    return data, activity
-# ----------------------------------------------------------------------------
 # HERO: cold open
 # ----------------------------------------------------------------------------
 HERO_ROLE = "CVfy · Focus Spoofer · security & AI"
@@ -422,18 +293,14 @@ def hero(theme):
 .cur{{animation:blink 1.1s steps(1) 2s 3}}
 @keyframes blink{{50%{{opacity:0}}}}
 """
-    name, nw, ng = ptext("bold", "Abhinav Ranish", 132, W / 2, 182, "url(#ng)", "middle", max_w=900, glyph_cls="ng")
+    # solid name: the sunset carries the colour, the type stays quiet
+    name, nw, ng = ptext("bold", "Abhinav Ranish", 132, W / 2, 182, p["fg"], "middle", max_w=900, glyph_cls="ng")
     stagger = "".join(f".ng{i}{{animation-delay:{.035 * i:.3f}s}}" for i in range(ng))
-    x0, x1 = W / 2 - nw / 2, W / 2 + nw / 2
     # Malayalam sits clear of the sun (sun top = HZ - SUN_R = 280)
-    ml, _, _ = ptext("ml", NAME_ML, 46, W / 2, 250, p["fg"], "middle", cls="ml")
+    ml, _, _ = ptext("ml", NAME_ML, 46, W / 2, 250, p["mut"], "middle", cls="ml")
     role, rw, _ = ptext("semi", HERO_ROLE, 36, W / 2 - 14, 424, p["fg"], "middle", max_w=1040)
-    c1, c2, c3 = p["name"]
     s1, s2 = p["sun"]
     defs = (
-        f'<linearGradient id="ng" gradientUnits="userSpaceOnUse" x1="{f1(x0)}" y1="0" x2="{f1(x1)}" y2="0">'
-        f'<stop offset="0" stop-color="{c1}"/><stop offset=".5" stop-color="{c2}"/><stop offset="1" stop-color="{c3}"/>'
-        f'</linearGradient>'
         f'<radialGradient id="sg" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="{s1}"/>'
         f'<stop offset=".62" stop-color="{s2}"/><stop offset="1" stop-color="{s2}" stop-opacity="0"/></radialGradient>'
         f'<clipPath id="frame"><rect width="{W}" height="{H}" rx="24"/></clipPath>'
@@ -654,107 +521,83 @@ def card_cvfy(theme):
 
 
 # ----------------------------------------------------------------------------
-# PIPELINE: the abhinav_daily DAG, one task per row so it reads on a phone
-# ----------------------------------------------------------------------------
-PIPELINE_TASKS = [  # (task, subtitle)
-    ("extract_annoyances", "ASU logins · tab chaos"),
-    ("build_prototype", "ts · python · swift"),
-    ("harden_security", "PII-Redactor · write guard"),
-    ("deploy", "*.aranish.uk · vercel"),
-    ("ship", "CVfy · Focus Spoofer"),
-]
-
-
-def pipeline(theme):
-    p = PAL[theme]
-    # 600-wide viewBox, shown at width=520: 22-unit text is ~13px on a 360px phone.
-    W, X, NW, NH, GAP, Y0 = 600, 24, 552, 82, 26, 70
-    H = Y0 + len(PIPELINE_TASKS) * (NH + GAP) - GAP + 118
-    T0, STEP, EDGE = .4, .9, .3
-    css = [f".rise{{animation:rise .6s {EASE} backwards}}@keyframes rise{{from{{opacity:0;transform:translateY(10px)}}}}",
-           f".chk{{transform-box:fill-box;transform-origin:center;animation:pop .35s {EASE} backwards}}"
-           "@keyframes pop{from{opacity:0;transform:scale(.4)}}",
-           # steps(1): each colour holds, then switches cleanly (no amber->green olive midpoint)
-           f"@keyframes st{{0%{{fill:{p['mut']}}}25%,75%{{fill:{p['amber']}}}100%{{fill:{p['ok']}}}}}",
-           f"@keyframes sk{{0%{{stroke:{p['line2']}}}25%,75%{{stroke:{p['amber']}}}100%{{stroke:{p['ok']}}}}}",
-           f"@keyframes edge{{from{{stroke-dashoffset:100;opacity:0}}}}",
-           f".log{{transform-box:fill-box;transform-origin:0 50%;animation:typ 1.1s steps(45) {T0 + STEP * 5 + .4:.2f}s backwards}}"
-           "@keyframes typ{from{transform:scaleX(0)}}"]
-    body = [f'<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="20" fill="{p["card"]}" stroke="{p["line"]}" stroke-width="1.5"/>',
-            mtext("dag_id: abhinav_daily · @daily", X + 4, 46, 22, p["mut"])]
-    log_y = H - 34
-    defs = [f'<marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">'
-            f'<path d="M0 0L10 5L0 10z" fill="{p["line2"]}"/></marker>',
-            f'<clipPath id="lc"><rect class="log" x="{X}" y="{log_y - 26}" width="{W - 2 * X}" height="36"/></clipPath>']
-    cx = W / 2
-    for i, (task, sub) in enumerate(PIPELINE_TASKS):
-        y = Y0 + i * (NH + GAP)
-        t = T0 + STEP * i
-        css.append(f".s{i}{{animation:st {STEP:.2f}s steps(1,end) {t:.2f}s backwards}}"
-                   f".n{i}{{animation:sk {STEP:.2f}s steps(1,end) {t:.2f}s backwards}}"
-                   f".k{i}{{animation-delay:{t + STEP - .05:.2f}s}}")
-        body.append(
-            f'<rect class="n{i}" x="{X}" y="{y}" width="{NW}" height="{NH}" rx="12" fill="{p["raised"]}" stroke="{p["ok"]}" stroke-width="2"/>'
-            f'<rect class="s{i}" x="{X + 22}" y="{y + 20}" width="18" height="18" rx="4" fill="{p["ok"]}"/>'
-            + mtext(task, X + 54, y + 37, 26, p["fg"], weight=700)
-            + mtext(sub, X + 54, y + 67, 22, p["mut"])
-            + f'<g class="chk k{i}"><circle cx="{X + NW - 34}" cy="{y + NH / 2}" r="15" fill="{p["ok"]}"/>'
-              f'<path d="M{X + NW - 41} {y + NH / 2}l5 5 9-9" stroke="{p["card"]}" stroke-width="3.2" fill="none" '
-              f'stroke-linecap="round" stroke-linejoin="round"/></g>')
-        if i < len(PIPELINE_TASKS) - 1:
-            e = f"M{cx} {y + NH}V{y + NH + GAP - 2}"
-            te = t + STEP - .1  # edge draws as the task turns green
-            css.append(f".e{i}{{animation:edge {EDGE}s linear {te:.2f}s backwards}}")
-            defs.append(f'<path id="ep{i}" d="M{cx} {y + NH - 6}V{y + NH + GAP + 8}"/>')
-            body.append(f'<path class="e{i}" d="{e}" stroke="{p["line2"]}" stroke-width="2.5" fill="none" '
-                        f'stroke-dasharray="100" marker-end="url(#ah)"/>')
-            # data packet: starts only once its edge is drawn; invisible at rest (decoration only)
-            tb = te + EDGE
-            body.append(f'<circle r="6" fill="{p["accent"]}" opacity="0">'
-                        f'<animateMotion begin="{tb:.2f}s" dur=".35s" fill="freeze"><mpath href="#ep{i}"/></animateMotion>'
-                        f'<animate attributeName="opacity" values="0;1;1;0" begin="{tb:.2f}s" dur=".35s" fill="freeze"/></circle>')
-    end = T0 + STEP * 5
-    body.append(f'<g class="rise" style="animation-delay:{end:.2f}s">'
-                + mtext("DagRun ✓ success · 5/5 tasks", X + 4, log_y - 44, 24, p["ok"], weight=700) + "</g>")
-    body.append(f'<g clip-path="url(#lc)">{mtext("[INFO] next run: whatever annoys me tomorrow", X + 4, log_y, 20, p["mut"])}</g>')
-    desc = ("DAG abhinav_daily: " + ", ".join(f"{t} ({s})" for t, s in PIPELINE_TASKS)
-            + ". DagRun success, 5 of 5 tasks. Next run: whatever annoys me tomorrow.")
-    return svg_doc(W, H, "abhinav_daily DAG", desc, "".join(css), "".join(body), "".join(defs))
-
-
-# ----------------------------------------------------------------------------
 # STACK: icon grid, icons fetched once at build time and inlined with
 # per-icon id prefixes (so gradients/clipPaths never collide)
 # ----------------------------------------------------------------------------
-STACK = [
-    ("SHIP", ["ts", "react", "nextjs", "tailwind", "vite", "swift", "prisma", "nodejs"]),
-    ("DATA & AI", ["py", "postgres", "mongodb", "selenium", "go:claude"]),
-    ("INFRA & SEC", ["docker", "vercel", "cloudflare", "githubactions", "linux", "bash",
-                     "go:burpsuite", "go:wireshark", "go:kali"]),
+STACK = [  # at most 10 per row
+    ("BUILD", ["ts", "react", "nextjs", "tailwind", "vite", "nodejs", "swift", "tauri", "go"]),
+    ("DATA", ["py", "postgres", "go:neon", "mongodb", "prisma", "go:opentelemetry"]),
+    ("AI", ["lobe:claude", "lobe:codex", "t3", "lobe:grok", "lobe:grokbot", "lobe:dotsstudio", "lobe:muse",
+            "lobe:kimi", "lobe:qwen", "lobe:opencode"]),
+    ("CLOUD", ["aws", "azure", "cloudflare", "vercel", "docker", "githubactions", "git", "linux", "bash"]),
+    ("SEC & QA", ["go:playwright", "selenium", "go:burpsuite", "go:wireshark", "go:kali"]),
 ]
 STACK_NAMES = {
     "ts": "TypeScript", "react": "React", "nextjs": "Next.js", "tailwind": "Tailwind CSS", "vite": "Vite",
-    "swift": "Swift", "prisma": "Prisma", "nodejs": "Node.js", "py": "Python", "postgres": "PostgreSQL",
-    "mongodb": "MongoDB", "selenium": "Selenium", "go:claude": "Claude", "docker": "Docker", "vercel": "Vercel",
-    "cloudflare": "Cloudflare", "githubactions": "GitHub Actions", "linux": "Linux", "bash": "Bash",
-    "go:burpsuite": "Burp Suite", "go:wireshark": "Wireshark", "go:kali": "Kali Linux",
+    "nodejs": "Node.js", "swift": "Swift", "tauri": "Tauri", "go": "Go",
+    "py": "Python", "postgres": "PostgreSQL", "go:neon": "Neon", "mongodb": "MongoDB", "prisma": "Prisma",
+    "go:opentelemetry": "OpenTelemetry",
+    "lobe:claude": "Claude", "lobe:codex": "Codex", "t3": "T3 Code", "lobe:grok": "Grok", "lobe:grokbot": "Grokbot",
+    "lobe:dotsstudio": "dots", "lobe:muse": "Muse", "lobe:kimi": "Kimi", "lobe:qwen": "Qwen", "lobe:opencode": "OpenCode",
+    "aws": "AWS", "azure": "Azure", "cloudflare": "Cloudflare", "vercel": "Vercel", "docker": "Docker",
+    "githubactions": "GitHub Actions", "git": "Git", "linux": "Linux", "bash": "Bash",
+    "go:playwright": "Playwright", "selenium": "Selenium", "go:burpsuite": "Burp Suite",
+    "go:wireshark": "Wireshark", "go:kali": "Kali Linux",
 }
+# AI marks come from lobe-icons (24x24, MIT) and sit on a skillicons-style tile;
+# these have a brand-colour variant, the rest are monochrome in the theme's ink.
+LOBE = "https://unpkg.com/@lobehub/icons-static-svg@1.99.0/icons"
+LOBE_COLOR = {"claude", "codex", "kimi", "qwen", "muse"}
+TILE = {"dark": ("#242938", "#FFFFFF"), "light": ("#F4F2ED", "#000000")}  # (tile, ink), as skillicons
+# T3 Code mark, from pingdotgg/t3code apps/mobile/assets/widget/T3Mark.svg
+T3_MARK = ("7 29 111 74", "M33.4509 93V47.56H15.5309V37H64.3309V47.56H46.4109V93H33.4509ZM86.7253 93.96C82.832 93.96 "
+           "78.9653 93.4533 75.1253 92.44C71.2853 91.3733 68.032 89.88 65.3653 87.96L70.4053 78.04C72.5386 79.5867 "
+           "75.0186 80.8133 77.8453 81.72C80.672 82.6267 83.5253 83.08 86.4053 83.08C89.6586 83.08 92.2186 82.44 "
+           "94.0853 81.16C95.952 79.88 96.8853 78.12 96.8853 75.88C96.8853 73.7467 96.0586 72.0667 94.4053 70.84C92.752 "
+           "69.6133 90.0853 69 86.4053 69H80.4853V60.44L96.0853 42.76L97.5253 47.4H68.1653V37H107.365V45.4L91.8453 "
+           "63.08L85.2853 59.32H89.0453C95.9253 59.32 101.125 60.8667 104.645 63.96C108.165 67.0533 109.925 71.0267 "
+           "109.925 75.88C109.925 79.0267 109.099 81.9867 107.445 84.76C105.792 87.48 103.259 89.6933 99.8453 "
+           "91.4C96.432 93.1067 92.0586 93.96 86.7253 93.96Z")
 
 
 def icon_file(theme, ident):
-    return ICON_DIR / theme / (ident.replace("go:", "go-") + ".svg")
+    return ICON_DIR / theme / (ident.replace(":", "-") + ".svg")
+
+
+def tile(theme, viewbox, inner, fill_rule="nonzero"):
+    # same wrapper the icon services use, so inline_icon treats every tile alike
+    bg, ink = TILE[theme]
+    return ('<svg width="48" height="48" viewBox="0 0 256 256" fill="none" xmlns="http://www.w3.org/2000/svg">'
+            '<g transform="translate(0, 0)"><svg width="256" height="256" fill="none" viewBox="0 0 256 256">'
+            f'<rect width="256" height="256" fill="{bg}" rx="60"/>'
+            f'<svg x="56" y="56" width="144" height="144" viewBox="{viewbox}" fill="{ink}" color="{ink}" '
+            f'fill-rule="{fill_rule}">{inner}</svg>'
+            '</svg></g></svg>')
+
+
+def get(url):
+    req = urllib.request.Request(url, headers={"User-Agent": "profile-build-assets"})
+    return urllib.request.urlopen(req, timeout=30).read()
 
 
 def fetch_icons():
     for theme in ("dark", "light"):
         for _, ids in STACK:
             for ident in ids:
-                if ident.startswith("go:"):
-                    url = f"https://go-skill-icons.vercel.app/api/icons?i={ident[3:]}&theme={theme}"
+                if ident == "t3":
+                    raw = tile(theme, T3_MARK[0], f'<path d="{T3_MARK[1]}"/>').encode()
+                elif ident.startswith("lobe:"):
+                    name = ident[5:] + ("-color" if ident[5:] in LOBE_COLOR else "")
+                    src = get(f"{LOBE}/{name}.svg").decode()
+                    m = re.search(r'(<svg[^>]*viewBox="([^"]+)"[^>]*>)(.*)</svg>', src, re.S)
+                    if not m:
+                        raise SystemExit(f"icon {ident}: unexpected markup")
+                    rule = "evenodd" if 'fill-rule="evenodd"' in m.group(1) else "nonzero"
+                    raw = tile(theme, m.group(2), re.sub(r"<title>.*?</title>", "", m.group(3)), rule).encode()
+                elif ident.startswith("go:"):
+                    raw = get(f"https://go-skill-icons.vercel.app/api/icons?i={ident[3:]}&theme={theme}")
                 else:
-                    url = f"https://skillicons.dev/icons?i={ident}&theme={theme}"
-                req = urllib.request.Request(url, headers={"User-Agent": "profile-build-assets"})
-                raw = urllib.request.urlopen(req, timeout=30).read()
+                    raw = get(f"https://skillicons.dev/icons?i={ident}&theme={theme}")
                 if len(raw) < 300:
                     raise SystemExit(f"icon {ident} ({theme}) came back empty ({len(raw)} bytes): unknown id?")
                 f = icon_file(theme, ident)
@@ -775,15 +618,6 @@ def inline_icon(theme, ident, prefix):
     inner = m.group(1)
     if "<script" in inner or "foreignObject" in inner or re.search(r'href="https?:', inner):
         raise SystemExit(f"icon {ident} contains forbidden content")
-    if ident == "go:claude":
-        # go-skill-icons draws a tiny "Claude" wordmark under the mark; the other
-        # 21 tiles are icon-only. Keep the tile + mark, drop the wordmark and
-        # re-centre the mark (bbox x 55-202, y 28-175) at the size of the others.
-        paths = re.findall(r"<path\b[^>]*/>", inner)
-        if len(paths) != 3:
-            raise SystemExit("icon go:claude: unexpected markup")
-        inner = (paths[0] + '<g transform="translate(128 128) scale(1.2) translate(-128.5 -101.5)">'
-                 + paths[1] + "</g>")
     ids = set(re.findall(r'\bid="([^"]+)"', inner))
     for i in sorted(ids, key=len, reverse=True):
         inner = re.sub(rf'\bid="{re.escape(i)}"', f'id="{prefix}{i}"', inner)
@@ -794,14 +628,16 @@ def inline_icon(theme, ident, prefix):
 
 def stack(theme):
     p = PAL[theme]
-    W, H, T, GAP, X0 = 1000, 340, 64, 16, 250
+    # 10 tiles per row: X0 + 10 * (T + GAP) - GAP = 918, inside the 34-unit margin
+    T, GAP, X0, PITCH = 60, 12, 210, 88
+    W, H = 1000, 34 + len(STACK) * PITCH + 6
     css = [f".ic{{transform-box:fill-box;transform-origin:center;animation:pop .5s {EASE} backwards}}"
            "@keyframes pop{from{opacity:0;transform:translateY(10px) scale(.9)}}"]
     body = [f'<rect x="1" y="1" width="{W - 2}" height="{H - 2}" rx="20" fill="{p["card"]}" stroke="{p["line"]}" stroke-width="1.5"/>']
     n = 0
     for r, (label, ids) in enumerate(STACK):
-        y = 34 + r * 100
-        body.append(mtext(label, 34, y + 40, 19, p["mut"], weight=700, extra=' letter-spacing="2"'))
+        y = 34 + r * PITCH
+        body.append(mtext(label, 34, y + 37, 19, p["mut"], weight=700, extra=' letter-spacing="2"'))
         for c, ident in enumerate(ids):
             x = X0 + c * (T + GAP)
             inner = inline_icon(theme, ident, f"i{n}-")
@@ -810,9 +646,12 @@ def stack(theme):
                         f'fill="none">{inner}</svg></g>')
             n += 1
         if r < len(STACK) - 1:
-            body.append(f'<line x1="34" y1="{y + 84}" x2="{W - 34}" y2="{y + 84}" stroke="{p["line"]}"/>')
-    names = "; ".join(f"{lab.title()}: " + ", ".join(STACK_NAMES[i] for i in ids) for lab, ids in STACK)
-    return svg_doc(W, H, "which tools", names, "".join(css), "".join(body))
+            body.append(f'<line x1="34" y1="{y + T + 14}" x2="{W - 34}" y2="{y + T + 14}" stroke="{p["line"]}"/>')
+    return svg_doc(W, H, "which tools", stack_alt(), "".join(css), "".join(body))
+
+
+def stack_alt():
+    return ". ".join(f"{lab}: " + ", ".join(STACK_NAMES[i] for i in ids) for lab, ids in STACK) + "."
 
 
 # ----------------------------------------------------------------------------
@@ -822,18 +661,15 @@ def footer(theme):
     p = PAL[theme]
     W, H, HZ, SUN_R = 800, 164, 124, 28
     s2 = p["sun"][1]
-    c1, c2, c3 = p["name"]
     # measure both runs, then lay them out as one centred line
     _, nw, _ = ptext("bold", "Abhinav Ranish", 36, 0, 0, p["fg"])
     _, pw, _ = ptext("semi", "  ·  Phoenix, AZ", 30, 0, 0, p["mut"])
     x0 = (W - nw - pw) / 2
-    name, _, _ = ptext("bold", "Abhinav Ranish", 36, x0, 62, "url(#fg)")
+    name, _, _ = ptext("bold", "Abhinav Ranish", 36, x0, 62, p["fg"])
     place, _, _ = ptext("semi", "  ·  Phoenix, AZ", 30, x0 + nw, 62, p["mut"])
     css = (f".roll{{animation:roll .8s {EASE} backwards}}@keyframes roll{{from{{opacity:0;transform:translateY(16px)}}}}"
            f".sun{{animation:sink 2.4s {EASE} .2s backwards}}@keyframes sink{{from{{transform:translateY(-28px)}}}}")
-    defs = (f'<linearGradient id="fg" gradientUnits="userSpaceOnUse" x1="{f1(x0)}" x2="{f1(x0 + nw)}" y1="0" y2="0">'
-            f'<stop offset="0" stop-color="{c1}"/><stop offset=".5" stop-color="{c2}"/><stop offset="1" stop-color="{c3}"/></linearGradient>'
-            f'<radialGradient id="sg" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="{s2}"/>'
+    defs = (f'<radialGradient id="sg" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="{s2}"/>'
             f'<stop offset=".6" stop-color="{p["violet"]}"/><stop offset="1" stop-color="{p["violet"]}" stop-opacity="0"/></radialGradient>'
             f'<clipPath id="sky"><rect width="{W}" height="{HZ}"/></clipPath>'
             f'<clipPath id="frame"><rect width="{W}" height="{H}" rx="20"/></clipPath>')
@@ -852,31 +688,25 @@ def footer(theme):
 
 
 # ----------------------------------------------------------------------------
-# README rewriting (numbers in text, card alt text, recent activity)
+# README rewriting (alt text == SVG copy)
 # ----------------------------------------------------------------------------
-def rewrite_readme(data, activity):
+def rewrite_readme():
     if not README.exists():
         return
     txt = README.read_text()
-    for slug, c in (("focus", FOCUS), ("cvfy", CVFY)):  # alt text == SVG copy
-        txt = re.sub(rf'(<img alt=")[^"]*(" src="\./assets/card-{slug}-light\.svg")',
-                     lambda m: m.group(1) + escape(card_alt(c), {'"': "&quot;"}) + m.group(2), txt)
-    if activity:
-        block = "\n" + "\n".join(activity) + "\n"
-        txt = re.sub(r"(<!--START_SECTION:activity-->).*?(<!--END_SECTION:activity-->)",
-                     lambda m: m.group(1) + block + m.group(2), txt, flags=re.S)
+    for slug, alt in (("card-focus", card_alt(FOCUS)), ("card-cvfy", card_alt(CVFY)), ("stack", stack_alt())):
+        txt = re.sub(rf'(<img alt=")[^"]*(" src="\./assets/{slug}-light\.svg")',
+                     lambda m: m.group(1) + escape(alt, {'"': "&quot;"}) + m.group(2), txt)
     README.write_text(txt)
 
 
 # ----------------------------------------------------------------------------
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--offline", action="store_true")
     ap.add_argument("--fetch-icons", action="store_true")
     a = ap.parse_args()
     if a.fetch_icons:
         fetch_icons()
-    data, activity = load_data(a.offline)
     out = []
     for th in ("dark", "light"):
         out.append(write(f"hero-{th}.svg", hero(th)))
@@ -884,7 +714,6 @@ def main():
             out.append(write(f"btn-{slug}-{th}.svg", button(th, i, slug, label, si, primary)))
         out.append(write(f"card-focus-{th}.svg", card_focus(th)))
         out.append(write(f"card-cvfy-{th}.svg", card_cvfy(th)))
-        out.append(write(f"pipeline-{th}.svg", pipeline(th)))
         out.append(write(f"stack-{th}.svg", stack(th)))
         out.append(write(f"footer-{th}.svg", footer(th)))
     # drop SVGs this build no longer produces, so retired assets don't linger
@@ -892,7 +721,7 @@ def main():
         log("removing stale", stale.relative_to(ROOT))
         stale.unlink()
     TE.save()
-    rewrite_readme(data, activity)
+    rewrite_readme()
     total = sum(f.stat().st_size for f in out)
     for f in out:
         log(f"{f.relative_to(ROOT)} {f.stat().st_size / 1024:.1f} KB")
