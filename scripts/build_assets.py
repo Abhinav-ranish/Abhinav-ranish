@@ -49,7 +49,7 @@ PAL = {
         fg="#E6EDF3", mut="#8B949E", accent="#22D3EE", violet="#A78BFA", amber="#F59E0B",
         rose="#F43F5E", ok="#3FB950", grid="#22D3EE", grid_op=".13",
         sun=("#F59E0B", "#F43F5E"), sun_op=".55", glow="#A78BFA", glow_op=".10",
-        name=("#22D3EE", "#A78BFA", "#F59E0B"), shimmer="#FFFFFF", shimmer_op=".16",
+        cactus=("#3FB950", "#238636"), shimmer="#FFFFFF", shimmer_op=".16",
         chip_txt="#0B0F17",
     ),
     "light": dict(
@@ -57,7 +57,7 @@ PAL = {
         fg="#1F2328", mut="#57606A", accent="#1D4ED8", violet="#6D28D9", amber="#B45309",
         rose="#E11D48", ok="#1A7F37", grid="#1D4ED8", grid_op=".10",
         sun=("#FBBF24", "#FB7185"), sun_op=".62", glow="#1D4ED8", glow_op=".06",
-        name=("#1D4ED8", "#6D28D9", "#B45309"), shimmer="#1D4ED8", shimmer_op=".10",
+        cactus=("#2DA44E", "#1A7F37"), shimmer="#1D4ED8", shimmer_op=".10",
         chip_txt="#FFFFFF",
     ),
 }
@@ -269,6 +269,46 @@ def rr_perimeter(w, h, r):
 
 
 # ----------------------------------------------------------------------------
+# MASCOT: a saguaro that sprouts on the horizon, then waves and blinks on a loop
+# ----------------------------------------------------------------------------
+def cactus(p, x, base, s, delay, name="cac"):
+    """Saguaro with its base on y=base, ~125*s tall. Returns (css, svg); the svg
+    belongs inside a clip at the horizon so the sprout rises out of the ground."""
+    green, dark = p["cactus"]
+    ink = "#0D1117"
+    X = lambda v: f1(x + v * s)
+    Y = lambda v: f1(base - v * s)
+    # CSS only (looping SMIL is banned); arm pivots on its bbox bottom-left = shoulder
+    css = (f".{name}{{animation:sprout .9s {EASE} {delay:.2f}s backwards}}"
+           f"@keyframes sprout{{from{{transform:translateY({f1(135 * s)}px)}}}}"
+           f".{name}-arm{{transform-box:fill-box;transform-origin:0% 100%;"
+           f"animation:{name}-wave 5s ease-in-out {delay + .9:.2f}s infinite}}"
+           f"@keyframes {name}-wave{{0%,40%,100%{{transform:rotate(0)}}8%,24%{{transform:rotate(22deg)}}"
+           f"16%,32%{{transform:rotate(-8deg)}}}}"
+           f".{name}-eye{{transform-box:fill-box;transform-origin:center;animation:{name}-blink 4.2s {delay + 1.4:.2f}s infinite}}"
+           f"@keyframes {name}-blink{{0%,92%,100%{{transform:scaleY(1)}}95%{{transform:scaleY(.1)}}}}")
+    arm = f'stroke="{green}" stroke-width="{f1(18 * s)}" stroke-linecap="round" stroke-linejoin="round" fill="none"'
+    ribs = "".join(f'<line x1="{X(dx)}" y1="{Y(106)}" x2="{X(dx)}" y2="{Y(8)}"/>' for dx in (-9, 9))
+    spines = "".join(f'<path d="M{X(dx)} {Y(dy)}l{f1(4 * s * (1 if dx > 0 else -1))} {f1(-3 * s)}"/>'
+                     for dx, dy in ((-20, 30), (20, 44), (-20, 74), (20, 20)))
+    petals = "".join(f'<circle cx="{X(4.5 * math.cos(a))}" cy="{Y(124 + 4.5 * math.sin(a))}" r="{f1(3.6 * s)}"/>'
+                     for a in (k * 2 * math.pi / 5 + math.pi / 2 for k in range(5)))
+    svg = (f'<g class="{name}">'
+           f'<path d="M{X(-16)} {Y(54)}H{X(-38)}V{Y(80)}" {arm}/>'
+           f'<path class="{name}-arm" d="M{X(16)} {Y(62)}H{X(38)}V{Y(94)}" {arm}/>'
+           f'<rect x="{X(-20)}" y="{Y(118)}" width="{f1(40 * s)}" height="{f1(130 * s)}" rx="{f1(20 * s)}" fill="{green}"/>'
+           f'<g stroke="{dark}" stroke-width="{f1(2 * s)}" stroke-linecap="round" opacity=".6">{ribs}{spines}</g>'
+           f'<g fill="{p["rose"]}">{petals}</g><circle cx="{X(0)}" cy="{Y(124)}" r="{f1(2.6 * s)}" fill="{p["amber"]}"/>'
+           f'<g class="{name}-eye" fill="{ink}"><ellipse cx="{X(-8)}" cy="{Y(92)}" rx="{f1(3.2 * s)}" ry="{f1(4.4 * s)}"/>'
+           f'<ellipse cx="{X(8)}" cy="{Y(92)}" rx="{f1(3.2 * s)}" ry="{f1(4.4 * s)}"/></g>'
+           f'<g fill="{p["rose"]}" opacity=".55"><circle cx="{X(-13)}" cy="{Y(84)}" r="{f1(3 * s)}"/>'
+           f'<circle cx="{X(13)}" cy="{Y(84)}" r="{f1(3 * s)}"/></g>'
+           f'<path d="M{X(-6)} {Y(84)}q{f1(6 * s)} {f1(6 * s)} {f1(12 * s)} 0" stroke="{ink}" stroke-width="{f1(2.4 * s)}" '
+           f'stroke-linecap="round" fill="none"/></g>')
+    return css, svg
+
+
+# ----------------------------------------------------------------------------
 # HERO: cold open
 # ----------------------------------------------------------------------------
 HERO_ROLE = "CVfy · Focus Spoofer · security & AI"
@@ -313,6 +353,9 @@ def hero(theme):
     floor = [f'<line x1="{vx}" y1="{HZ}" x2="{vx + k * 260}" y2="{H}"/>' for k in range(-4, 5)]
     floor += [f'<line x1="0" y1="{f1(HZ + d)}" x2="{W}" y2="{f1(HZ + d)}"/>' for d in (8, 20, 37, 60, 90)]
     cx = W / 2 - 14 + rw / 2 + 12  # cursor sits right after the measured role outline
+    # the saguaro sprouts right of the sun once it has risen; its top (~225) clears the name
+    cac_css, cac = cactus(p, 960, HZ, 1.0, 2.2)
+    css += cac_css
     body = (
         f'<g clip-path="url(#frame)">'
         f'<rect width="{W}" height="{H}" fill="{p["bg"]}"/>'
@@ -323,6 +366,7 @@ def hero(theme):
         f'{name}{ml}'
         f'<path class="hz" d="M{W / 2} {HZ}H{W - 40}" stroke="{p["line2"]}" stroke-width="1.5" stroke-dasharray="600"/>'
         f'<path class="hz" d="M{W / 2} {HZ}H40" stroke="{p["line2"]}" stroke-width="1.5" stroke-dasharray="600"/>'
+        f'<g clip-path="url(#sky)">{cac}</g>'
         f'<g class="role">{role}<rect class="cur" x="{f1(cx)}" y="396" width="16" height="34" fill="{p["accent"]}"/></g>'
         f'</g><rect x=".75" y=".75" width="{W - 1.5}" height="{H - 1.5}" rx="23.5" fill="none" stroke="{p["line"]}" stroke-width="1.5"/>'
     )
@@ -409,16 +453,13 @@ def card_frame(p, offset, glow_x=180):
            f".rise{{animation:rise .7s {EASE} backwards}}@keyframes rise{{from{{opacity:0;transform:translateY(12px)}}}}"
            f".live{{animation:pulse 2.2s ease-in-out {offset + 2.6:.2f}s 3}}@keyframes pulse{{50%{{opacity:.3}}}}"
            f"@keyframes fade{{from{{opacity:0}}}}")
-    c1, c2, c3 = p["name"]
-    defs = (f'<linearGradient id="eg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="{c1}"/>'
-            f'<stop offset=".5" stop-color="{c2}"/><stop offset="1" stop-color="{c3}"/></linearGradient>'
-            f'<radialGradient id="glow" cx="{glow_x / CW:.2f}" cy=".5" r=".55"><stop offset="0" stop-color="{p["glow"]}" '
+    defs = (f'<radialGradient id="glow" cx="{glow_x / CW:.2f}" cy=".5" r=".55"><stop offset="0" stop-color="{p["glow"]}" '
             f'stop-opacity="{p["glow_op"]}"/><stop offset="1" stop-color="{p["glow"]}" stop-opacity="0"/></radialGradient>'
             f'<clipPath id="cardclip"><rect x="1.5" y="1.5" width="{CW - 3}" height="{CH - 3}" rx="22"/></clipPath>')
     back = (f'<rect x="1.5" y="1.5" width="{CW - 3}" height="{CH - 3}" rx="22" fill="{p["card"]}" stroke="{p["line"]}"/>'
             f'<rect x="1.5" y="1.5" width="{CW - 3}" height="{CH - 3}" rx="22" fill="url(#glow)"/>')
     edge = (f'<rect class="edge" x="1.5" y="1.5" width="{CW - 3}" height="{CH - 3}" rx="22" fill="none" '
-            f'stroke="url(#eg)" stroke-width="2"/>')
+            f'stroke="{p["line2"]}" stroke-width="2"/>')
     return css, defs, back, edge
 
 
@@ -669,6 +710,9 @@ def footer(theme):
     place, _, _ = ptext("semi", "  ·  Phoenix, AZ", 30, x0 + nw, 62, p["mut"])
     css = (f".roll{{animation:roll .8s {EASE} backwards}}@keyframes roll{{from{{opacity:0;transform:translateY(16px)}}}}"
            f".sun{{animation:sink 2.4s {EASE} .2s backwards}}@keyframes sink{{from{{transform:translateY(-28px)}}}}")
+    # same saguaro as the hero, waving goodbye just right of the name line
+    cac_css, cac = cactus(p, min(W - 70, x0 + nw + pw + 70), HZ, .7, .6)
+    css += cac_css
     defs = (f'<radialGradient id="sg" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="{s2}"/>'
             f'<stop offset=".6" stop-color="{p["violet"]}"/><stop offset="1" stop-color="{p["violet"]}" stop-opacity="0"/></radialGradient>'
             f'<clipPath id="sky"><rect width="{W}" height="{HZ}"/></clipPath>'
@@ -682,6 +726,7 @@ def footer(theme):
             f'<g clip-path="url(#sky)"><g class="sun"><circle cx="{W / 2}" cy="{HZ}" r="{SUN_R}" fill="url(#sg)" opacity="{p["sun_op"]}"/></g></g>'
             f'<g stroke="{p["grid"]}" stroke-opacity="{p["grid_op"]}" stroke-width="1.2">{"".join(floor)}</g>'
             f'<line x1="40" y1="{HZ}" x2="{W - 40}" y2="{HZ}" stroke="{p["line2"]}" stroke-width="1.5"/>'
+            f'<g clip-path="url(#sky)">{cac}</g>'
             f'<g class="roll" style="animation-delay:.1s">{name}{place}</g>'
             f'</g><rect x=".75" y=".75" width="{W - 1.5}" height="{H - 1.5}" rx="19.5" fill="none" stroke="{p["line"]}" stroke-width="1.5"/>')
     return svg_doc(W, H, "Abhinav Ranish · Phoenix, AZ", "Abhinav Ranish, Phoenix, AZ.", css, body, defs)
