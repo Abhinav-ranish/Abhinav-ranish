@@ -1,0 +1,5 @@
+assets/src/fonts/
+__pycache__/
+static/
+static-png/
+rendered.html

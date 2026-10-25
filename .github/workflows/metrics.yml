@@ -2,7 +2,23 @@ name: Metrics
 on:
   schedule: [{ cron: "0 2 * * *" }]
   workflow_dispatch:
-  push: { branches: ["main"] }
+  push:
+    branches: ["main"]
+    # Asset/README refreshes must not re-trigger a metrics run.
+    paths-ignore:
+      - "assets/**"
+      - "scripts/**"
+      - "github-metrics.svg"
+      - "README.md"
+
+# Same group as assets.yml so the two README writers never overlap (assets.yml
+# pushes with git, which would reject a non-fast-forward). GitHub keeps only one
+# *pending* run per group, so if a third run queues while one waits, the waiting
+# one is cancelled. The crons (02:00 here, 09:23 there) are 7 h apart, so that
+# only happens on a push that lands mid-run; accepted, the next day catches up.
+concurrency:
+  group: readme-writer
+  cancel-in-progress: false
 
 jobs:
   github-metrics:
@@ -11,24 +27,50 @@ jobs:
       contents: write
     steps:
       - name: Generate metrics
-        uses: lowlighter/metrics@latest
+        # Pinned: upstream is in maintenance mode, @latest can change without warning.
+        uses: lowlighter/metrics@v3.34
         with:
           user: Abhinav-ranish
           template: classic
           filename: github-metrics.svg
 
-          # PAT needs repo, read:user, and read:org, with access to Ada's private repos.
-          # read:user is required for private contribution counts, even with repo access.
+          # Classic PAT: repo, read:user, read:org. SSO-authorise it for the
+          # Ada-The-AI-Secretary-For-Phones and aranish-uk orgs.
           token: ${{ secrets.METRICS_TOKEN }}
 
-          # Include lifetime activity and organization repositories.
           base: header, activity, community, repositories, metadata
           base_indepth: yes
           repositories_affiliations: owner, collaborator, organization_member
+          # THE FIX for the empty "Most used languages": at the default batch of
+          # 100, GitHub answers RESOURCE_LIMITS_EXCEEDED for this account (many
+          # private + org repos). On that error the base plugin halves the batch
+          # but `continue`s with 0 repos fetched, which exits its loop empty, so
+          # languages, stars and PR counts were 0.
+          # Keep `repositories` EQUAL to `repositories_batch`: in v3.34 the loop
+          # stops as soon as a page returns fewer than `repositories` items, so
+          # e.g. 250/25 would quietly fetch only the first 25. 50/50 means the 50
+          # most recently updated repos (he owns 48 public ones alone, so older
+          # repos fall out of the language mix). Try 100/100 after one manual run
+          # with `debug: yes` shows no RESOURCE_LIMITS_EXCEEDED; drop both to 25
+          # if 50 logs it.
+          repositories: 50
+          repositories_batch: 50
 
           plugin_languages: yes
-          plugin_languages_ignored: html, css
+          plugin_languages_sections: most-used
+          plugin_languages_ignored: html, css, scss, jupyter notebook, makefile, dockerfile, batchfile, procfile
           plugin_languages_limit: 8
+          plugin_languages_threshold: 2%
+          plugin_languages_details: bytes-size, percentage
+          # Both linguist analyzers stay off: indepth clones every repo and runs
+          # linguist per commit (hits the 15 min timeout at ~11k commits), and
+          # the "recently-used" section starts the recent analyzer whatever
+          # plugin_languages_indepth says, so it is not listed above.
+          plugin_languages_indepth: no
 
           plugin_followup: yes
           plugin_followup_sections: repositories
+
+          # Set to yes for one manual run if a section is ever empty again:
+          # it prints the "halving batch" / plugin errors in the job log.
+          debug: no

@@ -1,70 +1,113 @@
-<h1 align="center">
-  Abhinav Ranish
-  <br>
-<img
-  src="https://readme-typing-svg.demolab.com?lines=Computer+Science+%2F+Software+Developer;Data+Engineer+%2F+Analytics;Automation+%2F+DevOps+%2F+Cloud;Security-aware+Systems+%2F+GRC&center=true&width=700&height=45"
-  alt="Typing SVG"
-/>
+<a href="https://aranish.uk">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/hero-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="./assets/hero-light.svg">
+    <img alt="Abhinav Ranish (അഭിനവ് റനീഷ്): founder of ada, creator of CVfy. Software, security and AI, built end to end." src="./assets/hero-light.svg" width="100%">
+  </picture>
+</a>
 
-</h1>
-
-
-<div style="display: flex; justify-content: space-between; align-items: center;">
-  <p align="left">
-    <img src="https://aranish.uk/api/visit/badge-redirect" alt="Profile Visits">
-    <!-- forces GitHub refresh because of redirect -->
-  </p>
-
-  <p align="right">
-    <a href="https://www.linkedin.com/in/abhinavranish/" target="_blank" style="text-decoration:none;">
-      <img src="https://github.com/gauravghongde/social-icons/blob/master/SVG/White/LinkedIN_white.svg?raw=true" alt="LinkedIn" width="30" height="30">
-    </a><br>abhinavranish<br>
-    <a href="mailto:chatgpt@asu.edu" style="text-decoration:none; color:inherit;">chatgpt@asu.edu</a><br>
-    <a href="https://aranish.uk" target="_blank" style="text-decoration:none; color:inherit;">https://aranish.uk</a><br>
-    <a href="https://aranish.uk/resume.pdf" target="_blank" style="text-decoration:none; color:inherit;">https://aranish.uk/resume.pdf</a>
-  </p>
-</div>
-
----
-
-### 👀 About Me
-
-- 🔭 I'm currently working on **Automation + tooling (portfolio + dashboards) and security-aware data pipelines + reporting tools**
-- 🌱 I'm currently learning **AWS fundamentals, system design (practical, scalable backend + data systems), and TypeScript + modern web tooling**
-- 👯 I'm looking to collaborate on **Open-source analytics tooling (SQL, dbt-style modeling, data quality, dashboards) and security automation tools (log parsing, audit evidence automation, scanners)**
-- 👨‍💻 All of my projects are available at **https://aranish.uk**
-- 📄 Know about my experiences **https://aranish.uk/resume.pdf**
-
----
-
-  ### 🛠️  Featured Project
-
-  **[CVfy](https://cvfy.dev)** — an AI resume-to-portfolio website builder that I created and maintain. Upload a
-  resume, pick from 40+ themes, and publish a live portfolio at `cvfy.dev/yourname`. 
-
-  🔗 **[cvfy.dev](https://cvfy.dev)** · [Who made it](https://cvfy.dev/about)
-
-  ---
-
-<h3 align="left">Connect with me:</h3>
-<p align="left">
-  <a href="https://github.com/Abhinav-ranish" target="_blank">
-    <img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/github.svg" alt="GitHub" height="30" width="40" />
-  </a>
-  <a href="https://linkedin.com/in/Abhinavranish" target="_blank">
-    <img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/linked-in-alt.svg" alt="LinkedIn" height="30" width="40" />
-  </a>
-  <a href="https://instagram.com/abhinav.ranish" target="_blank">
-    <img align="center" src="https://raw.githubusercontent.com/rahuldkjain/github-profile-readme-generator/master/src/images/icons/Social/instagram.svg" alt="Instagram" height="30" width="40" />
-  </a>
-</p>
-
----
+<p align="center"><sub>I turn things that annoy me twice into scripts, and scripts people ask for into products.</sub></p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Abhinav-ranish/Abhinav-ranish/main/github-metrics.svg" alt="Metrics" />
+<a href="https://aranish.uk/recruiters"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/btn-hire-dark.svg"><img alt="Hiring? Start here (résumé and recruiter view)" src="./assets/btn-hire-light.svg" height="36"></picture></a>
+<a href="https://aranish.uk"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/btn-site-dark.svg"><img alt="aranish.uk" src="./assets/btn-site-light.svg" height="36"></picture></a>
+<a href="https://www.linkedin.com/in/abhinavranish/"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/btn-linkedin-dark.svg"><img alt="LinkedIn" src="./assets/btn-linkedin-light.svg" height="36"></picture></a>
+<a href="mailto:chatgpt@asu.edu"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/btn-email-dark.svg"><img alt="Email" src="./assets/btn-email-light.svg" height="36"></picture></a>
+<a href="https://x.com/madebyabhinav"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/btn-x-dark.svg"><img alt="X @madebyabhinav" src="./assets/btn-x-light.svg" height="36"></picture></a>
+<br>
+<sub>or email <a href="mailto:chatgpt@asu.edu">chatgpt@asu.edu</a></sub>
 </p>
 
-<!---
-Abhinav-ranish/Abhinav-ranish is a ✨ special ✨ repository because its `README.md` (this file) appears on your GitHub profile.
---->
+<p align="center">
+  <!--PROOF:START--><b>11,309 commits</b> &nbsp;·&nbsp; <b>65 PRs merged</b> into repos I don't own, incl. 7 to <a href="https://github.com/rust-lang/rust-by-example">rust-lang/rust-by-example</a> &nbsp;·&nbsp; <b>103 repos</b> touched &nbsp;·&nbsp; <b>2 live products</b><!--PROOF:END-->
+</p>
+
+### `abhinav@aranish ~ $ whoami`
+
+CS at ASU, building from Phoenix. I founded **[ada](https://tryada.app)** and built **[CVfy](https://cvfy.dev)**; before that, security at Ampcus and an Azure migration at QFCRA in Qatar.
+
+### `~ $ ls ./building`
+
+<a href="https://tryada.app">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/card-ada-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="./assets/card-ada-light.svg">
+    <img alt="ada: share anything. It's handled. The share button becomes an AI assistant that saves links, sets reminders and adds things to your calendar. iOS · Android · Chrome extension." src="./assets/card-ada-light.svg" width="100%">
+  </picture>
+</a>
+
+<sub>&nbsp;&nbsp;Backed by Afore Capital, accelerated by Founders, Inc. (<a href="https://tryada.app">as listed on tryada.app</a>) · open-source piece: <a href="https://github.com/Ada-The-AI-Secretary-For-Phones/ada-imessage">ada-imessage</a>, the AI secretary that lives in your texts.</sub>
+
+<a href="https://cvfy.dev">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/card-cvfy-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="./assets/card-cvfy-light.svg">
+    <img alt="CVfy: your resume, already a website. Upload the resume you already have and get a themed site you can edit and publish. PDF or DOCX to live site in under a minute." src="./assets/card-cvfy-light.svg" width="100%">
+  </picture>
+</a>
+
+<sub>&nbsp;&nbsp;40+ themes · custom domains · see who opens it · free to publish (<a href="https://cvfy.dev">cvfy.dev</a>)</sub>
+
+### `~ $ ls ./shipped`
+
+| project | what it does |
+|---|---|
+| [IntelliTab](https://github.com/Abhinav-ranish/IntelliTab) · [live](https://intellitab.aranish.uk) | AI Chrome extension that sorts tabs into native tab groups and learns from your corrections<br><sub>TypeScript · React · MV3 · multi-LLM</sub> |
+| [WiSpec](https://github.com/Abhinav-ranish/WiSpec) · [live](https://wispec.aranish.uk) | Dual-band Wi-Fi spectroscopy that classifies materials with under $200 of hardware<br><sub>Python · Scapy · PicoScenes · ML</sub> |
+| [ux-guardian](https://github.com/aranish-uk/ux-guardian) · [demo](https://ux-guardian-demo.vercel.app) | AI customer-journey regression tests on every PR<br><sub>Python · LLM agents</sub> |
+| [swarm-persona](https://github.com/Abhinav-ranish/swarm-persona) | LLM persona agents QA your PR preview behind a network write guard<br><sub>Python · LLM agents</sub> |
+| [ClawHub](https://github.com/aranish-uk/ClawHub) | Self-hosted GitHub for autonomous agents, with Git Smart HTTP<br><sub>Fastify · Prisma · Postgres</sub> |
+| [ASU-ClassEnroller](https://github.com/Abhinav-ranish/ASU-ClassEnroller) | Auto-enrolls you in your ASU classes<br><sub>Python · Selenium · Node</sub> |
+
+<sub>also: <a href="https://readflow.aranish.uk">Readflow</a> · <a href="https://stock.aranish.uk">AI-Stock-Analyzer</a> · <a href="https://focus.oddworks.us">Focus-Spoofer</a> · <a href="https://github.com/Abhinav-ranish/blackbox-lunar">blackbox-lunar</a> · <a href="https://github.com/Abhinav-ranish/PII-Redactor">PII-Redactor</a></sub>
+
+### `~ $ airflow dags trigger abhinav_daily`
+
+<p align="center">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/pipeline-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="./assets/pipeline-light.svg">
+    <img alt="DAG abhinav_daily: extract_annoyances (ASU logins, tab chaos), build_prototype (ts, python, swift), harden_security (PII-Redactor, write guard), deploy (*.aranish.uk, vercel), ship (ada, CVfy). 5 of 5 tasks succeeded." src="./assets/pipeline-light.svg" width="520">
+  </picture>
+</p>
+
+<details>
+<summary><b><code>~ $ which tools</code></b> <sub>(click to expand)</sub></summary>
+<br>
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./assets/stack-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="./assets/stack-light.svg">
+  <img alt="Ship: TypeScript, React, Next.js, Tailwind CSS, Vite, Swift, Prisma, Node.js. Data and AI: Python, PostgreSQL, MongoDB, Selenium, Claude. Infra and security: Docker, Vercel, Cloudflare, GitHub Actions, Linux, Bash, Burp Suite, Wireshark, Kali Linux." src="./assets/stack-light.svg" width="100%">
+</picture>
+
+</details>
+
+<details>
+<summary><b><code>~ $ tail -n 6 activity.log</code></b> <sub>(recently shipped)</sub></summary>
+<br>
+
+<!--START_SECTION:activity-->
+- <code>2026-10-23</code> opened PR [Abhinav-ranish/Focus-Spoofer#15](https://github.com/Abhinav-ranish/Focus-Spoofer/pull/15)
+- <code>2026-10-20</code> pushed to [Abhinav-ranish/swarm-persona](https://github.com/Abhinav-ranish/swarm-persona)
+- <code>2026-10-14</code> opened PR [Abhinav-ranish/Focus-Spoofer#14](https://github.com/Abhinav-ranish/Focus-Spoofer/pull/14)
+- <code>2026-10-14</code> opened PR [Abhinav-ranish/Focus-Spoofer#13](https://github.com/Abhinav-ranish/Focus-Spoofer/pull/13)
+- <code>2026-10-11</code> opened PR [aranish-uk/ux-guardian#3](https://github.com/aranish-uk/ux-guardian/pull/3)
+- <code>2026-10-11</code> opened PR [aranish-uk/ux-guardian#2](https://github.com/aranish-uk/ux-guardian/pull/2)
+<!--END_SECTION:activity-->
+
+</details>
+
+### `~ $ exit`
+
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="./assets/footer-dark.svg">
+  <source media="(prefers-color-scheme: light)" srcset="./assets/footer-light.svg">
+  <img alt="Abhinav Ranish, Phoenix, AZ." src="./assets/footer-light.svg" width="100%">
+</picture>
+
+<p align="center">
+  <a href="https://aranish.uk"><img src="https://aranish.uk/api/visit/badge-redirect" alt="profile visits"></a>
+  <br>
+  <sub>Every custom visual here is generated by <a href="./scripts/build_assets.py">scripts/build_assets.py</a> · the visit counter is self-hosted on aranish.uk</sub>
+</p>

@@ -1,0 +1,76 @@
+name: Profile assets
+on:
+  schedule: [{ cron: "23 9 * * *" }]
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths:
+      - "scripts/**"
+      - "assets/src/**"
+      - ".github/workflows/assets.yml"
+
+concurrency:
+  group: readme-writer
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      # Stdlib only. Display text comes from assets/src/textpaths.json; the
+      # script only needs fonttools + uharfbuzz when that text changes.
+      - name: Build SVGs and README sections
+        env:
+          GH_TOKEN: ${{ secrets.METRICS_TOKEN }}
+        run: python scripts/build_assets.py
+
+      - name: Install validators
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq libxml2-utils librsvg2-bin
+
+      - name: Validate SVGs
+        run: |
+          set -euo pipefail
+          find assets -name '*.svg' -not -path 'assets/src/*' -print0 | xargs -0 -n1 xmllint --noout
+          python scripts/check_assets.py --static-dir static
+          # Rasterise the resting frame (all motion stripped) of every SVG.
+          mkdir -p static-png
+          for f in static/assets/*.svg; do
+            rsvg-convert -w 800 -o "static-png/$(basename "$f" .svg).png" "$f"
+          done
+
+      - name: Render README through GitHub's sanitizer
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          # mode=markdown matches how a repository README is rendered (gfm mode is
+          # comment-style, with hard line breaks).
+          jq -Rs '{text: ., mode: "markdown", context: "Abhinav-ranish/Abhinav-ranish"}' README.md \
+            | gh api markdown --input - > rendered.html
+          want=$(grep -o '<picture>' README.md | wc -l)
+          got=$(grep -o '<picture>' rendered.html | wc -l)
+          echo "pictures: README=$want rendered=$got"
+          test "$want" -eq "$got"
+          grep -o 'srcset="\./assets/[^"]*"' README.md | cut -d'"' -f2 | while read -r src; do
+            grep -q "$src" rendered.html || { echo "stripped: $src"; exit 1; }
+          done
+          ! grep -q 'style=' <(grep -v '^<!--' README.md)
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: resting-frames
+          path: static-png/
+
+      - uses: stefanzweifel/git-auto-commit-action@v7
+        with:
+          commit_message: "chore(profile): refresh assets [skip ci]"
+          file_pattern: "assets/*.svg assets/src/data.json assets/src/textpaths.json README.md"

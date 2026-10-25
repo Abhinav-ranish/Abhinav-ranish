@@ -1,0 +1,33 @@
+name: Contribution snake
+on:
+  schedule: [{ cron: "17 7 * * *" }]
+  workflow_dispatch:
+
+# Publishes to the orphan `output` branch, never to main, so it cannot race
+# the README writers.
+concurrency:
+  group: snake
+  cancel-in-progress: true
+
+permissions:
+  contents: write
+
+jobs:
+  snake:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: Platane/snk/svg-only@v3
+        with:
+          github_user_name: ${{ github.repository_owner }}
+          outputs: |
+            dist/snake.svg?color_snake=#6D28D9&color_dots=#ebedf0,#c7d2fe,#a78bfa,#6d28d9,#3b0764
+            dist/snake-dark.svg?palette=github-dark&color_snake=#22D3EE&color_dots=#161b22,#2e1f4d,#5b3a9e,#a78bfa,#f59e0b
+
+      - uses: crazy-max/ghaction-github-pages@v5
+        with:
+          target_branch: output
+          build_dir: dist
+          keep_history: false
+          jekyll: false
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
