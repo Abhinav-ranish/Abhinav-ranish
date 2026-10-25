@@ -2,11 +2,9 @@
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="./assets/hero-dark.svg">
     <source media="(prefers-color-scheme: light)" srcset="./assets/hero-light.svg">
-    <img alt="Abhinav Ranish (അഭിനവ് റനീഷ്): founder of ada, creator of CVfy. Software, security and AI, built end to end." src="./assets/hero-light.svg" width="100%">
+    <img alt="Abhinav Ranish (അഭിനവ് റനീഷ്): builds CVfy and Focus Spoofer. Software, security and AI, built end to end." src="./assets/hero-light.svg" width="100%">
   </picture>
 </a>
-
-<p align="center"><sub>I turn things that annoy me twice into scripts, and scripts people ask for into products.</sub></p>
 
 <p align="center">
 <a href="https://aranish.uk/recruiters"><picture><source media="(prefers-color-scheme: dark)" srcset="./assets/btn-hire-dark.svg"><img alt="Hiring? Start here (résumé and recruiter view)" src="./assets/btn-hire-light.svg" height="36"></picture></a>
@@ -18,25 +16,11 @@
 <sub>or email <a href="mailto:chatgpt@asu.edu">chatgpt@asu.edu</a></sub>
 </p>
 
-<p align="center">
-  <!--PROOF:START--><b>11,312 commits</b> &nbsp;·&nbsp; <b>65 PRs merged</b> into repos I don't own, incl. 7 to <a href="https://github.com/rust-lang/rust-by-example">rust-lang/rust-by-example</a> &nbsp;·&nbsp; <b>103 repos</b> touched &nbsp;·&nbsp; <b>2 live products</b><!--PROOF:END-->
-</p>
-
 ### `abhinav@aranish ~ $ whoami`
 
-CS at ASU, building from Phoenix. I founded **[ada](https://tryada.app)** and built **[CVfy](https://cvfy.dev)**; before that, security at Ampcus and an Azure migration at QFCRA in Qatar.
+CS @ ASU (the Harvard of the West, source: trust me), building from Phoenix. I founded **contentOS** and **[ada](https://tryada.app)**, built **[CVfy](https://cvfy.dev)** and **[Focus Spoofer](https://focus.oddworks.us)**; before that, PM @ TruckerPath, security @ Ampcus and IT/Azure @ QFCRA.
 
 ### `~ $ ls ./building`
-
-<a href="https://tryada.app">
-  <picture>
-    <source media="(prefers-color-scheme: dark)" srcset="./assets/card-ada-dark.svg">
-    <source media="(prefers-color-scheme: light)" srcset="./assets/card-ada-light.svg">
-    <img alt="ada: share anything. It's handled. The share button becomes an AI assistant that saves links, sets reminders and adds things to your calendar. iOS · Android · Chrome extension." src="./assets/card-ada-light.svg" width="100%">
-  </picture>
-</a>
-
-<sub>&nbsp;&nbsp;Backed by Afore Capital, accelerated by Founders, Inc. (<a href="https://tryada.app">as listed on tryada.app</a>) · open-source piece: <a href="https://github.com/Ada-The-AI-Secretary-For-Phones/ada-imessage">ada-imessage</a>, the AI secretary that lives in your texts.</sub>
 
 <a href="https://cvfy.dev">
   <picture>
@@ -47,6 +31,18 @@ CS at ASU, building from Phoenix. I founded **[ada](https://tryada.app)** and bu
 </a>
 
 <sub>&nbsp;&nbsp;40+ themes · custom domains · see who opens it · free to publish (<a href="https://cvfy.dev">cvfy.dev</a>)</sub>
+
+<a href="https://focus.oddworks.us">
+  <picture>
+    <source media="(prefers-color-scheme: dark)" srcset="./assets/card-focus-dark.svg">
+    <source media="(prefers-color-scheme: light)" srcset="./assets/card-focus-light.svg">
+    <img alt="Focus Spoofer: switch tabs. The page never knows. Spoofs tab visibility and focus so sites can't tell you left, and randomizes your canvas, WebGL and audio fingerprint. Chrome extension · open source." src="./assets/card-focus-light.svg" width="100%">
+  </picture>
+</a>
+
+<sub>&nbsp;&nbsp;visibility + focus spoofing · canvas/WebGL/audio fingerprint randomization · <a href="https://github.com/Abhinav-ranish/Focus-Spoofer">source on GitHub</a></sub>
+
+<sub>&nbsp;&nbsp;also building: <a href="https://tryada.app">ada</a>, the share button as an AI assistant · contentOS</sub>
 
 ### `~ $ ls ./shipped`
 
@@ -59,7 +55,7 @@ CS at ASU, building from Phoenix. I founded **[ada](https://tryada.app)** and bu
 | [ClawHub](https://github.com/aranish-uk/ClawHub) | Self-hosted GitHub for autonomous agents, with Git Smart HTTP<br><sub>Fastify · Prisma · Postgres</sub> |
 | [ASU-ClassEnroller](https://github.com/Abhinav-ranish/ASU-ClassEnroller) | Auto-enrolls you in your ASU classes<br><sub>Python · Selenium · Node</sub> |
 
-<sub>also: <a href="https://readflow.aranish.uk">Readflow</a> · <a href="https://stock.aranish.uk">AI-Stock-Analyzer</a> · <a href="https://focus.oddworks.us">Focus-Spoofer</a> · <a href="https://github.com/Abhinav-ranish/blackbox-lunar">blackbox-lunar</a> · <a href="https://github.com/Abhinav-ranish/PII-Redactor">PII-Redactor</a></sub>
+<sub>also: <a href="https://readflow.aranish.uk">Readflow</a> · <a href="https://stock.aranish.uk">AI-Stock-Analyzer</a> · <a href="https://github.com/Abhinav-ranish/blackbox-lunar">blackbox-lunar</a> · <a href="https://github.com/Abhinav-ranish/PII-Redactor">PII-Redactor</a></sub>
 
 ### `~ $ airflow dags trigger abhinav_daily`
 
@@ -67,7 +63,7 @@ CS at ASU, building from Phoenix. I founded **[ada](https://tryada.app)** and bu
   <picture>
     <source media="(prefers-color-scheme: dark)" srcset="./assets/pipeline-dark.svg">
     <source media="(prefers-color-scheme: light)" srcset="./assets/pipeline-light.svg">
-    <img alt="DAG abhinav_daily: extract_annoyances (ASU logins, tab chaos), build_prototype (ts, python, swift), harden_security (PII-Redactor, write guard), deploy (*.aranish.uk, vercel), ship (ada, CVfy). 5 of 5 tasks succeeded." src="./assets/pipeline-light.svg" width="520">
+    <img alt="DAG abhinav_daily: extract_annoyances (ASU logins, tab chaos), build_prototype (ts, python, swift), harden_security (PII-Redactor, write guard), deploy (*.aranish.uk, vercel), ship (CVfy, Focus Spoofer). 5 of 5 tasks succeeded." src="./assets/pipeline-light.svg" width="520">
   </picture>
 </p>
 

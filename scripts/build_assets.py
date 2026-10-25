@@ -400,7 +400,7 @@ def load_data(offline):
 # ----------------------------------------------------------------------------
 # HERO: cold open
 # ----------------------------------------------------------------------------
-HERO_ROLE = "founder @ ada · creator of CVfy · security & AI"
+HERO_ROLE = "CVfy · Focus Spoofer · security & AI"
 
 
 def hero(theme):
@@ -460,7 +460,7 @@ def hero(theme):
         f'</g><rect x=".75" y=".75" width="{W - 1.5}" height="{H - 1.5}" rx="23.5" fill="none" stroke="{p["line"]}" stroke-width="1.5"/>'
     )
     return svg_doc(W, H, "Abhinav Ranish (അഭിനവ് റനീഷ്)",
-                   "Founder of ada, creator of CVfy. Software, security and AI, built end to end.",
+                   "Builds CVfy and Focus Spoofer. Software, security and AI, built end to end.",
                    css + stagger, body, defs)
 
 
@@ -529,8 +529,8 @@ def button(theme, idx, slug, label, si, primary=False):
 CW, CH = 1000, 320
 # Card copy. Claims checked against the live sites on 2026-10-25; the SVG
 # subtitle and the README alt text are built from the same strings.
-ADA = dict(title="ada", hook="Share anything. It's handled.", sub="iOS · Android · Chrome extension",
-           desc="The share button becomes an AI assistant that saves links, sets reminders and adds things to your calendar.")
+FOCUS = dict(title="Focus Spoofer", hook="Switch tabs. The page never knows.", sub="Chrome extension · open source",
+             desc="Spoofs tab visibility and focus so sites can't tell you left, and randomizes your canvas, WebGL and audio fingerprint.")
 CVFY = dict(title="CVfy", hook="Your resume, already a website.", sub="PDF or DOCX → live site in under a minute",
             desc="Upload the resume you already have and get a themed site you can edit and publish.")
 
@@ -568,7 +568,7 @@ def status_pill(p, label, offset):
 def card_text(p, offset, c):
     # Mobile rule: no copy under 28 units in this 1000-wide card.
     X, MAXW = 380, 590
-    t, _, _ = ptext("bold", c["title"], 76, X, 130, p["fg"])
+    t, _, _ = ptext("bold", c["title"], 76, X, 130, p["fg"], max_w=MAXW)
     h, _, _ = ptext("semi", c["hook"], 40, X, 192, p["fg"], max_w=MAXW)
     s, _, _ = ptext("semi", c["sub"], 30, X, 246, p["mut"], max_w=MAXW)
     return (f'<g class="rise" style="animation-delay:{offset + .3:.2f}s">{t}</g>'
@@ -580,12 +580,13 @@ def card_alt(c):
     return f"{c['title']}: {c['hook'][0].lower() + c['hook'][1:]} {c['desc']} {c['sub'].replace('→', 'to')}."
 
 
-def card_ada(theme):
+def card_focus(theme):
     p = PAL[theme]
-    o = 0.0
+    o = 0.35  # plays after the CVfy card
     css, defs, back, edge = card_frame(p, o)
     gx, gy = 185, 96
-    chips_def = [("link", p["accent"], -46), ("screenshot", p["violet"], 0), ("file", p["amber"], 46)]
+    # page-side signals fly at the eye and get swallowed; the eye stays open
+    chips_def = [("blur", p["accent"], -46), ("hidden", p["violet"], 0), ("canvas fp", p["amber"], 46)]
     css += ("".join(f"@keyframes fly{i}{{0%{{opacity:1;transform:translate(-120px,{dy}px) scale(1)}}80%{{opacity:1}}"
                     f"100%{{opacity:0;transform:translate(0,0) scale(.55)}}}}" for i, (_, _, dy) in enumerate(chips_def))
             + f".chip{{opacity:0}}"
@@ -593,7 +594,8 @@ def card_ada(theme):
             "@keyframes pop{from{opacity:0;transform:scale(.85)}}"
             ".tap{animation:tap .5s ease 1.25s backwards}@keyframes tap{0%{transform:translateY(0)}50%{transform:translateY(-6px)}}")
     glyph = (f'<g class="tap" fill="none" stroke="{p["fg"]}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">'
-             f'<path d="M{gx - 30} {gy - 6}h-10v62h80v-62h-10"/><path d="M{gx} {gy + 28}V{gy - 44}M{gx - 18} {gy - 26}l18-18 18 18"/></g>')
+             f'<path d="M{gx - 52} {gy}q52-50 104 0q-52 50-104 0z"/><circle cx="{gx}" cy="{gy}" r="16"/>'
+             f'<circle cx="{gx}" cy="{gy}" r="4" fill="{p["fg"]}"/></g>')
     chips = []
     for i, (lab, col, _) in enumerate(chips_def):
         w = len(lab) * 11 + 26
@@ -601,20 +603,20 @@ def card_ada(theme):
                      f'<rect x="{f1(gx - w / 2)}" y="{gy - 2}" width="{f1(w)}" height="30" rx="15" fill="{col}"/>'
                      + mtext(lab, gx, gy + 19, 17, p["chip_txt"], "middle", 700) + "</g>")
     pills = []
-    for i, (lab, col) in enumerate([("saved ✓", p["ok"]), ("reminder · Fri 9am", p["accent"]), ("added to calendar", p["violet"])]):
+    for i, (lab, col) in enumerate([("hidden → false", p["ok"]), ("hasFocus() → true", p["accent"]), ("fingerprint ~ random", p["violet"])]):
         y = 178 + i * 42
         pills.append(f'<g class="pop" style="animation-delay:{o + 1.5 + .08 * i:.2f}s">'
                      f'<rect x="60" y="{y}" width="250" height="32" rx="9" fill="{p["raised"]}" stroke="{p["line2"]}"/>'
                      f'<circle cx="80" cy="{y + 16}" r="5" fill="{col}"/>'
                      + mtext(lab, 96, y + 22, 17, p["fg"], weight=600) + "</g>")
     body = (back + glyph + f'<g clip-path="url(#cardclip)">{"".join(chips)}</g>' + "".join(pills)
-            + card_text(p, o, ADA) + status_pill(p, "tryada.app", o) + edge)
-    return svg_doc(CW, CH, "ada: share anything, it's handled", card_alt(ADA), css, body, defs)
+            + card_text(p, o, FOCUS) + status_pill(p, "focus.oddworks.us", o) + edge)
+    return svg_doc(CW, CH, "Focus Spoofer: switch tabs, the page never knows", card_alt(FOCUS), css, body, defs)
 
 
 def card_cvfy(theme):
     p = PAL[theme]
-    o = 0.35  # plays after the ada card
+    o = 0.0
     css, defs, back, edge = card_frame(p, o)
     sw = [p["accent"], p["violet"], p["amber"], p["ok"]]
     css += (f".pdf{{opacity:0;transform-box:fill-box;transform-origin:center;animation:pdf 1.1s {EASE} {o + .1:.2f}s backwards}}"
@@ -659,7 +661,7 @@ PIPELINE_TASKS = [  # (task, subtitle)
     ("build_prototype", "ts · python · swift"),
     ("harden_security", "PII-Redactor · write guard"),
     ("deploy", "*.aranish.uk · vercel"),
-    ("ship", "ada · CVfy"),
+    ("ship", "CVfy · Focus Spoofer"),
 ]
 
 
@@ -852,19 +854,11 @@ def footer(theme):
 # ----------------------------------------------------------------------------
 # README rewriting (numbers in text, card alt text, recent activity)
 # ----------------------------------------------------------------------------
-def proof_line(data):
-    return (f"<b>{data['commits']:,} commits</b> &nbsp;·&nbsp; <b>{data['prs_ext']} PRs merged</b> into repos I don't own, "
-            f"incl. {data['rust_prs']} to <a href=\"https://github.com/rust-lang/rust-by-example\">rust-lang/rust-by-example</a>"
-            f" &nbsp;·&nbsp; <b>{data['repos_contrib']} repos</b> touched &nbsp;·&nbsp; <b>{data['products']} live products</b>")
-
-
 def rewrite_readme(data, activity):
     if not README.exists():
         return
     txt = README.read_text()
-    txt = re.sub(r"(<!--PROOF:START-->).*?(<!--PROOF:END-->)", lambda m: m.group(1) + proof_line(data) + m.group(2),
-                 txt, flags=re.S)
-    for slug, c in (("ada", ADA), ("cvfy", CVFY)):  # alt text == SVG copy
+    for slug, c in (("focus", FOCUS), ("cvfy", CVFY)):  # alt text == SVG copy
         txt = re.sub(rf'(<img alt=")[^"]*(" src="\./assets/card-{slug}-light\.svg")',
                      lambda m: m.group(1) + escape(card_alt(c), {'"': "&quot;"}) + m.group(2), txt)
     if activity:
@@ -888,7 +882,7 @@ def main():
         out.append(write(f"hero-{th}.svg", hero(th)))
         for i, (slug, label, si, primary) in enumerate(BUTTONS):
             out.append(write(f"btn-{slug}-{th}.svg", button(th, i, slug, label, si, primary)))
-        out.append(write(f"card-ada-{th}.svg", card_ada(th)))
+        out.append(write(f"card-focus-{th}.svg", card_focus(th)))
         out.append(write(f"card-cvfy-{th}.svg", card_cvfy(th)))
         out.append(write(f"pipeline-{th}.svg", pipeline(th)))
         out.append(write(f"stack-{th}.svg", stack(th)))
